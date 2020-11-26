@@ -1,0 +1,20 @@
+
+
+.field-detail-img {
+    min-width: 19%;
+    max-width: 19%;
+    height: 200px;
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0px;
+}
+
+
+.rear-img{
+    margin-left: 10px;
+}
+
+.div-field-img{
+    display: none;
+}

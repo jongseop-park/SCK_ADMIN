@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sck.admin.pkg.menu.mapper.MenuMapper">
+    <select id="adminTree" resultType="Menu">
+        SELECT
+            SEQ,
+            MENU_TYPE,
+            LPAD('',(LEVEL-1)*2,'')||MENU_NAME MENU_NAME,
+            MENU_URL,
+            PARENT_SEQ,
+            DEPTH,
+            ORDER_NO,
+            USE_YN
+        FROM WEB_MENU
+        WHERE MENU_TYPE ='ADMIN'
+        CONNECT BY PRIOR SEQ = DECODE(SEQ, PARENT_SEQ,NULL,PARENT_SEQ)
+        START WITH DEPTH = 1
+        ORDER SIBLINGS BY DEPTH, ORDER_NO
+    </select>
+
+    <select id="frontTree" resultType="Menu">
+        SELECT
+            SEQ,
+            MENU_TYPE,
+            LPAD('',(LEVEL-1)*2,'')||MENU_NAME MENU_NAME,
+            MENU_URL,
+            PARENT_SEQ,
+            DEPTH,
+            ORDER_NO,
+            USE_YN
+        FROM WEB_MENU
+        WHERE MENU_TYPE ='FRONT'
+        CONNECT BY PRIOR SEQ = DECODE(SEQ, PARENT_SEQ,NULL,PARENT_SEQ)
+        START WITH DEPTH = 1
+        ORDER SIBLINGS BY DEPTH, ORDER_NO
+    </select>
+
+    <insert id="insert" parameterType="menu">
+        INSERT INTO WEB_MENU(SEQ, MENU_TYPE, MENU_NAME, MENU_URL, PARENT_SEQ, DEPTH, USE_YN)
+        VALUES(WEB_MENU_SEQ.NEXTVAL, #{menuType}, #{menuName}, #{menuUrl}, #{parentSeq}, #{depth}, #{useYn})
+    </insert>
+
+    <update id="update" parameterType="menu">
+        UPDATE WEB_MENU
+        SET
+            MENU_TYPE = #{menuType},
+            MENU_NAME = #{menuName},
+            MENU_URL = #{menuUrl},
+            PARENT_SEQ = #{parentSeq},
+            DEPTH = #{depth},
+            USE_YN = #{useYn}
+        WHERE SEQ = #{seq}
+    </update>
+
+    <delete id="delete" parameterType="menu">
+        DELETE FROM WEB_MENU
+        WHERE
+            SEQ IN
+            (
+                SELECT SEQ
+                FROM WEB_MENU
+                START WITH SEQ = #{seq}
+                CONNECT BY PRIOR SEQ = PARENT_SEQ
+            )
+    </delete>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sck.admin.pkg.admin.mapper.AdminMapper">
+    <resultMap id="AdminMap" type="Admin">
+        <id property="seq" column="SEQ"/>
+        <result property="adminId" column="ADMIN_ID"/>
+        <result property="adminPw" column="ADMIN_PW"/>
+        <result property="adminName" column="ADMIN_NAME"/>
+        <result property="adminEmail" column="ADMIN_EMAIL"/>
+        <result property="adminTel" column="ADMIN_TEL"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="delYn" column="DEL_YN"/>
+        <collection property="auth" ofType="Authority">
+            <result property="adminSeq" column="ADMIN_SEQ"/>
+            <result property="authSeq" column="AUTH_SEQ"/>
+        </collection>
+        <collection property="authGrp" ofType="AuthorityGrp">
+            <id property="seq" column="SEQ"/>
+            <result property="authCode" column="AUTH_CODE"/>
+            <result property="authName" column="AUTH_NAME"/>
+            <result property="regDate" column="REG_DATE"/>
+            <result property="modDate" column="MOD_DATE"/>
+            <result property="delYn" column="DEL_YN"/>
+        </collection>
+    </resultMap>
+
+    <select id="findByAdminId" resultMap="AdminMap" parameterType="Admin">
+        SELECT
+        A.ADMIN_ID,
+        A.ADMIN_PW,
+        C.AUTH_CODE
+        FROM WEB_ADMIN A JOIN WEB_AUTH B
+        ON A.SEQ = B.ADMIN_SEQ
+        JOIN WEB_AUTH_GRP C
+        ON B.AUTH_SEQ = C.SEQ
+        WHERE ADMIN_ID = #{adminId}
+        AND C.DEL_YN = 'N'
+
+    </select>
+    <insert id="adminInsert" parameterType="Admin">
+        INSERT INTO WEB_ADMIN(SEQ, ADMIN_ID, ADMIN_PW, ADMIN_NAME, ADMIN_EMAIL, ADMIN_TEL, REG_DATE, DEL_YN)
+        VALUES (WEB_ADMIN_SEQ.NEXTVAL, #{adminId}, #{adminPw}, #{adminName}, #{adminEmail}, #{adminTel}, SYSDATE, 'N')
+    </insert>
+
+
+    
+    <insert id="authInsert" parameterType="Admin">
+        INSERT INTO WEB_AUTH(ADMIN_SEQ, AUTH_SEQ)
+        VALUES (
+            (SELECT SEQ FROM WEB_ADMIN WHERE ADMIN_ID = #{adminId}),
+            (SELECT SEQ FROM WEB_AUTH_GRP WHERE AUTH_CODE = 'ROLE_ADMIN')
+        )
+    </insert>
+</mapper>

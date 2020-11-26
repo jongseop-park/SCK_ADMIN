@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sck.admin.pkg.field.mapper.FieldMapper">
+
+    <resultMap id="FieldMap" type="Field">
+        <id property="seq" column="SEQ"/>
+        <result property="fieldName" column="FIELD_NAME"/>
+        <result property="fieldAddress" column="FIELD_ADDRESS"/>
+        <result property="fieldTel" column="FIELD_TEL"/>
+        <result property="fieldRefund" column="FIELD_REFUND"/>
+        <result property="regId" column="REG_ID"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="modId" column="MOD_ID"/>
+        <result property="modDate" column="MOD_DATE"/>
+        <result property="delYn" column="DEL_YN"/>
+        <collection property="fieldDetail" ofType="FieldDetail">
+            <id property="seq" column="WEB_FIELD_DETAIL_SEQ"/>
+            <result property="fieldSeq" column="FIELD_SEQ"/>
+            <result property="fieldSubName" column="FIELD_SUB_NAME"/>
+            <result property="fieldRental" column="FIELD_RENTAL"/>
+            <result property="fieldShower" column="FIELD_SHOWER"/>
+            <result property="fieldParking" column="FIELD_PARKING"/>
+            <result property="fieldDrink" column="FIELD_DRINK"/>
+            <result property="fieldInfo" column="FIELD_INFO"/>
+            <result property="orderNo" column="ORDER_NO"/>
+            <result property="delYn" column="DEL_YN"/>
+        </collection>
+    </resultMap>
+
+    <sql id="cmmnOrder">
+        ORDER BY SEQ DESC
+    </sql>
+
+    <sql id="search">
+        <if test="searchType != null">
+            <if test="searchType == 'tw'.toString()">AND (FIELD_NAME LIKE '%' || #{keyword} || '%' OR REG_ID LIKE '%' || #{keyword} || '%' OR MOD_ID LIKE '%' || #{keyword} || '%')</if>
+            <if test="searchType == 't'.toString()">AND FIELD_NAME LIKE '%' || #{keyword} || '%'</if>
+            <if test="searchType == 'w'.toString()">AND (REG_ID LIKE '%' || #{keyword} || '%' OR MOD_ID LIKE '%' || #{keyword} || '%')</if>
+        </if>
+    </sql>
+
+    <!-- 전체 조회 -->
+    <select id="page" resultType="Field" parameterType="Field">
+        SELECT
+            SEQ,
+            FIELD_NAME,
+            FIELD_ADDRESS,
+            FIELD_TEL,
+            FIELD_REFUND,
+            REG_ID,
+            TO_CHAR(REG_DATE,'YYYY-MM-DD HH24:MI') REG_DATE,
+            MOD_ID,
+            TO_CHAR(MOD_DATE,'YYYY-MM-DD HH24:MI') MOD_DATE
+        FROM (
+            SELECT
+                SEQ,
+                FIELD_NAME,
+                FIELD_ADDRESS,
+                FIELD_TEL,
+                FIELD_REFUND,
+                REG_ID,
+                REG_DATE,
+                MOD_ID,
+                MOD_DATE,
+                ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS ROW_NUM
+            FROM WEB_FIELD
+            WHERE DEL_YN = 'N'
+            <include refid="search"></include>
+                ) FIELD
+        WHERE ROW_NUM BETWEEN #{rowStart} AND #{rowEnd}
+        <include refid="cmmnOrder"/>
+    </select>
+
+    <!-- 게시글 상세 -->
+    <select id="findByDetail" resultMap="FieldMap" parameterType="Field">
+        SELECT
+            A.SEQ,
+            A.FIELD_NAME,
+            A.FIELD_ADDRESS,
+            A.FIELD_REFUND,
+            A.FIELD_TEL,
+            A.DEL_YN,
+            A.REG_ID,
+            A.REG_DATE,
+            A.MOD_ID,
+            A.MOD_DATE,
+            B.SEQ WEB_FIELD_DETAIL_SEQ,
+            B.FIELD_SEQ,
+            B.FIELD_SUB_NAME,
+            B.FIELD_RENTAL,
+            B.FIELD_SHOWER,
+            B.FIELD_PARKING,
+            B.FIELD_DRINK,
+            B.FIELD_INFO,
+            B.ORDER_NO,
+            B.DEL_YN
+        FROM WEB_FIELD A LEFT OUTER JOIN WEB_FIELD_DETAIL B
+        ON A.SEQ = B.FIELD_SEQ
+        WHERE A.SEQ = #{seq,jdbcType=VARCHAR}
+        ORDER BY B.ORDER_NO ASC
+    </select>
+
+    <!-- 게시글 추가 -->
+    <insert id="insert" parameterType="Field">
+        <selectKey resultType="String" keyProperty="seq" order="BEFORE"> /* mybatis내에 특정값을 리턴 */
+        SELECT WEB_FIELD_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO WEB_FIELD
+        (SEQ, FIELD_NAME, FIELD_ADDRESS, FIELD_TEL, FIELD_REFUND, REG_ID, REG_DATE, DEL_YN)
+        VALUES
+        (#{seq}, #{fieldName}, #{fieldAddress}, #{fieldTel}, #{fieldRefund}, #{regId}, SYSDATE, 'N' )
+    </insert>
+
+    <insert id="insertDetail" parameterType="Field">
+        <foreach collection="fieldDetail" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL" index="index">
+            INTO WEB_FIELD_DETAIL (SEQ, FIELD_SEQ, FIELD_SUB_NAME, FIELD_RENTAL, FIELD_SHOWER, FIELD_PARKING, FIELD_DRINK, FIELD_INFO, ORDER_NO, DEL_YN)
+            VALUES
+            (GET_WEB_FIELD_DETAIL_SEQ, #{seq}, #{item.fieldSubName}, #{item.fieldRental}, #{item.fieldShower}, #{item.fieldParking}, #{item.fieldDrink}, #{item.fieldInfo}, #{item.orderNo}, #{item.delYn})
+        </foreach>
+    </insert>
+    <!-- INSERT ALL에는 시퀀스가 자동으로 증가되지 않기 때문에 함수를 만들어서 사용.
+    create or replace FUNCTION GET_WEB_EVENTS_HALL_SEQ RETURN NUMBER IS
+    BEGIN
+    RETURN WEB_FIELD_DETAIL_SEQ.NEXTVAL;
+    END;
+    -->
+    <!-- 게시글 수정 -->
+    <update id="update" parameterType="Field">
+        UPDATE WEB_FIELD
+        SET
+            SEQ = #{seq},
+            FIELD_NAME = #{fieldName},
+            FIELD_ADDRESS = #{fieldAddress},
+            FIELD_TEL = #{fieldTel},
+            FIELD_REFUND = #{fieldRefund},
+            MOD_ID = #{modId},
+            MOD_DATE = SYSDATE
+        WHERE
+            SEQ = #{seq}
+    </update>
+
+    <update id="updateDetail" parameterType="Field">
+        MERGE INTO WEB_FIELD_DETAIL A /* 병합쿼리 새로운 데이터 A */
+        USING (
+        <foreach collection="fieldDetail" item="item" separator=" UNION ALL ">
+            SELECT
+            #{item.seq,jdbcType=VARCHAR} SEQ
+            , #{item.fieldSeq} FIELD_SEQ
+            , #{item.fieldSubName} FIELD_SUB_NAME
+            , #{item.fieldRental} FIELD_RENTAL
+            , #{item.fieldShower} FIELD_SHOWER
+            , #{item.fieldParking} FIELD_PARKING
+            , #{item.fieldDrink} FIELD_DRINK
+            , #{item.fieldInfo} FIELD_INFO
+            , #{item.orderNo} ORDER_NO
+            , #{item.delYn} DEL_YN
+            FROM DUAL
+        </foreach>
+        ) B /* 기존데이터 B */
+        ON ( A.SEQ = B.SEQ ) /* 조건 */
+        WHEN MATCHED THEN /* 조건이 맞으면 아래쿼리 실행*/
+        UPDATE SET
+        A.FIELD_SEQ = B.FIELD_SEQ
+        , A.FIELD_SUB_NAME = B.FIELD_SUB_NAME
+        , A.FIELD_RENTAL = B.FIELD_RENTAL
+        , A.FIELD_SHOWER = B.FIELD_SHOWER
+        , A.FIELD_PARKING = B.FIELD_PARKING
+        , A.FIELD_DRINK = B.FIELD_DRINK
+        , A.FIELD_INFO = B.FIELD_INFO
+        , A.ORDER_NO = B.ORDER_NO
+        , A.DEL_YN = B.DEL_YN
+        DELETE WHERE B.DEL_YN = 'Y'
+        WHEN NOT MATCHED THEN /* 조건이 다르면 INSERT */
+        INSERT(A.SEQ, A.FIELD_SEQ, A.FIELD_SUB_NAME, A.FIELD_RENTAL, A.FIELD_SHOWER, A.FIELD_PARKING, A.FIELD_DRINK, A.FIELD_INFO, A.ORDER_NO, A.DEL_YN)
+        VALUES(WEB_FIELD_DETAIL_SEQ.NEXTVAL, #{seq}, B.FIELD_SUB_NAME, B.FIELD_RENTAL, B.FIELD_SHOWER, B.FIELD_PARKING, B.FIELD_DRINK, B.FIELD_INFO, B.ORDER_NO, B.DEL_YN)
+    </update>
+    <!-- 게시글 삭제 -->
+    <delete id="delete" parameterType="Field">
+        DELETE FROM WEB_FIELD
+        WHERE SEQ = #{seq}
+    </delete>
+    <!-- 게시글 삭제 여부(DEL_YN) -->
+    <update id="deleteUpdate" parameterType="Field">
+        UPDATE WEB_FIELD
+        SET
+            DEL_YN = 'Y'
+        WHERE
+            SEQ = #{seq}
+    </update>
+
+    <delete id="deleteDetail" parameterType="Field">
+        DELETE WEB_FIELD_DETAIL
+        WHERE FIELD_SEQ = #{seq}
+    </delete>
+    <!-- 게시글 총 개수 -->
+    <select id="listTotalCount" resultType="int">
+        SELECT COUNT(SEQ)
+        FROM WEB_FIELD
+        WHERE DEL_YN = 'N'
+        <include refid="search"></include>
+    </select>
+</mapper>

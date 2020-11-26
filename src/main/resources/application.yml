@@ -1,0 +1,52 @@
+# 서버 포트
+server:
+  port: 16000
+---
+# JSP
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+---
+# 실시간 반영 ( 정적 변동 시 )
+spring:
+  devtools:
+    livereload:
+      enabled: true
+---
+# static 정적 리소스 접근
+spring:
+  resources:
+    static-locations: classpath:/static/
+    add-mappings: true
+  mvc:
+    static-path-pattern: /static/**
+---
+---
+# ORACLE
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:orcl
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: sck
+    password: soccerkick
+
+---
+# mybatis 세팅
+mybatis:
+  type-aliases-package: com.sck.admin.domain
+  mapper-locations: classpath:mapper/**/*mapper.xml
+  configuration:
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    map-underscore-to-camel-case: true
+
+---
+# FileUpload
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB

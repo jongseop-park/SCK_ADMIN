@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sck.admin.pkg.authorityGrp.mapper.AuthorityGrpMapper">
+    <sql id="cmmnOrder">
+        ORDER BY SEQ DESC
+    </sql>
+
+    <sql id="search">
+        <if test="searchType != null">
+            <if test="searchType == 'cn'.toString()">AND (AUTH_CODE LIKE '%' || #{keyword} || '%' OR AUTH_NAME LIKE '%' || #{keyword} || '%' OR REG_ID LIKE '%' || #{keyword} || '%' OR MOD_ID LIKE '%' || #{keyword} || '%')</if>
+            <if test="searchType == 'c'.toString()">AND AUTH_CODE LIKE '%' || #{keyword} || '%'</if>
+            <if test="searchType == 'n'.toString()">AND AUTH_NAME LIKE '%' || #{keyword} || '%'</if>
+        </if>
+    </sql>
+
+    <!-- 전체 조회 -->
+   <select id="page" resultType="AuthorityGrp" parameterType="AuthorityGrp">
+      SELECT
+      SEQ,
+      AUTH_CODE,
+      AUTH_NAME,
+      REG_ID,
+      TO_CHAR(REG_DATE,'YYYY-MM-DD HH24:MI') REG_DATE,
+      MOD_ID,
+      TO_CHAR(MOD_DATE,'YYYY-MM-DD HH24:MI') MOD_DATE,
+      DEL_YN
+      FROM (
+      SELECT
+      SEQ,
+      AUTH_CODE,
+      AUTH_NAME,
+      REG_ID,
+      REG_DATE,
+      MOD_ID,
+      MOD_DATE,
+      DEL_YN,
+      ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS ROW_NUM
+      FROM WEB_AUTH_GRP
+      WHERE DEL_YN = 'N'
+      <include refid="search"></include>
+      ) AUTH_GRP
+      WHERE ROW_NUM BETWEEN #{rowStart} AND #{rowEnd}
+      <include refid="cmmnOrder"/>
+   </select>
+
+    <!-- 게시글 상세 -->
+    <select id="findByDetail" resultType="AuthorityGrp" parameterType="AuthorityGrp">
+        SELECT
+            SEQ,
+            AUTH_CODE,
+            AUTH_NAME,
+            REG_ID,
+            REG_DATE,
+            MOD_ID,
+            MOD_DATE,
+            DEL_YN
+        FROM WEB_AUTH_GRP
+        ON SEQ
+        WHERE SEQ = #{seq,jdbcType=VARCHAR}
+    </select>
+
+<!--    &lt;!&ndash; 게시글 추가 &ndash;&gt;-->
+<!--    <insert id="insert" parameterType="Field">-->
+<!--        <selectKey resultType="String" keyProperty="seq" order="BEFORE"> /* mybatis내에 특정값을 리턴 */-->
+<!--            SELECT WEB_FIELD_SEQ.NEXTVAL FROM DUAL-->
+<!--        </selectKey>-->
+<!--        INSERT INTO WEB_FIELD-->
+<!--        (SEQ, FIELD_NAME, FIELD_ADDRESS, FIELD_TEL, FIELD_REFUND, REG_ID, REG_DATE, DEL_YN)-->
+<!--        VALUES-->
+<!--        (#{seq}, #{fieldName}, #{fieldAddress}, #{fieldTel}, #{fieldRefund}, #{regId}, SYSDATE, 'N' )-->
+<!--    </insert>-->
+
+<!--    <insert id="insertDetail" parameterType="Field">-->
+<!--        <foreach collection="fieldDetail" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL" index="index">-->
+<!--            INTO WEB_FIELD_DETAIL (SEQ, FIELD_SEQ, FIELD_SUB_NAME, FIELD_RENTAL, FIELD_SHOWER, FIELD_PARKING, FIELD_DRINK, FIELD_INFO, ORDER_NO, DEL_YN)-->
+<!--            VALUES-->
+<!--            (GET_WEB_FIELD_DETAIL_SEQ, #{seq}, #{item.fieldSubName}, #{item.fieldRental}, #{item.fieldShower}, #{item.fieldParking}, #{item.fieldDrink}, #{item.fieldInfo}, #{item.orderNo}, #{item.delYn})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+<!--    &lt;!&ndash; INSERT ALL에는 시퀀스가 자동으로 증가되지 않기 때문에 함수를 만들어서 사용.-->
+<!--    create or replace FUNCTION GET_WEB_EVENTS_HALL_SEQ RETURN NUMBER IS-->
+<!--    BEGIN-->
+<!--    RETURN WEB_FIELD_DETAIL_SEQ.NEXTVAL;-->
+<!--    END;-->
+<!--    &ndash;&gt;-->
+<!--    &lt;!&ndash; 게시글 수정 &ndash;&gt;-->
+<!--    <update id="update" parameterType="Field">-->
+<!--        UPDATE WEB_FIELD-->
+<!--        SET-->
+<!--            SEQ = #{seq},-->
+<!--            FIELD_NAME = #{fieldName},-->
+<!--            FIELD_ADDRESS = #{fieldAddress},-->
+<!--            FIELD_TEL = #{fieldTel},-->
+<!--            FIELD_REFUND = #{fieldRefund},-->
+<!--            MOD_ID = #{modId},-->
+<!--            MOD_DATE = SYSDATE-->
+<!--        WHERE-->
+<!--            SEQ = #{seq}-->
+<!--    </update>-->
+
+<!--    <update id="updateDetail" parameterType="Field">-->
+<!--        MERGE INTO WEB_FIELD_DETAIL A /* 병합쿼리 새로운 데이터 A */-->
+<!--        USING (-->
+<!--        <foreach collection="fieldDetail" item="item" separator=" UNION ALL ">-->
+<!--            SELECT-->
+<!--            #{item.seq,jdbcType=VARCHAR} SEQ-->
+<!--            , #{item.fieldSeq} FIELD_SEQ-->
+<!--            , #{item.fieldSubName} FIELD_SUB_NAME-->
+<!--            , #{item.fieldRental} FIELD_RENTAL-->
+<!--            , #{item.fieldShower} FIELD_SHOWER-->
+<!--            , #{item.fieldParking} FIELD_PARKING-->
+<!--            , #{item.fieldDrink} FIELD_DRINK-->
+<!--            , #{item.fieldInfo} FIELD_INFO-->
+<!--            , #{item.orderNo} ORDER_NO-->
+<!--            , #{item.delYn} DEL_YN-->
+<!--            FROM DUAL-->
+<!--        </foreach>-->
+<!--        ) B /* 기존데이터 B */-->
+<!--        ON ( A.SEQ = B.SEQ ) /* 조건 */-->
+<!--        WHEN MATCHED THEN /* 조건이 맞으면 아래쿼리 실행*/-->
+<!--        UPDATE SET-->
+<!--        A.FIELD_SEQ = B.FIELD_SEQ-->
+<!--        , A.FIELD_SUB_NAME = B.FIELD_SUB_NAME-->
+<!--        , A.FIELD_RENTAL = B.FIELD_RENTAL-->
+<!--        , A.FIELD_SHOWER = B.FIELD_SHOWER-->
+<!--        , A.FIELD_PARKING = B.FIELD_PARKING-->
+<!--        , A.FIELD_DRINK = B.FIELD_DRINK-->
+<!--        , A.FIELD_INFO = B.FIELD_INFO-->
+<!--        , A.ORDER_NO = B.ORDER_NO-->
+<!--        , A.DEL_YN = B.DEL_YN-->
+<!--        DELETE WHERE B.DEL_YN = 'Y'-->
+<!--        WHEN NOT MATCHED THEN /* 조건이 다르면 INSERT */-->
+<!--        INSERT(A.SEQ, A.FIELD_SEQ, A.FIELD_SUB_NAME, A.FIELD_RENTAL, A.FIELD_SHOWER, A.FIELD_PARKING, A.FIELD_DRINK, A.FIELD_INFO, A.ORDER_NO, A.DEL_YN)-->
+<!--        VALUES(WEB_FIELD_DETAIL_SEQ.NEXTVAL, #{seq}, B.FIELD_SUB_NAME, B.FIELD_RENTAL, B.FIELD_SHOWER, B.FIELD_PARKING, B.FIELD_DRINK, B.FIELD_INFO, B.ORDER_NO, B.DEL_YN)-->
+<!--    </update>-->
+<!--    &lt;!&ndash; 게시글 삭제 &ndash;&gt;-->
+<!--    <delete id="delete" parameterType="Field">-->
+<!--        DELETE FROM WEB_FIELD-->
+<!--        WHERE SEQ = #{seq}-->
+<!--    </delete>-->
+<!--    &lt;!&ndash; 게시글 삭제 여부(DEL_YN) &ndash;&gt;-->
+<!--    <update id="deleteUpdate" parameterType="Field">-->
+<!--        UPDATE WEB_FIELD-->
+<!--        SET-->
+<!--            DEL_YN = 'Y'-->
+<!--        WHERE-->
+<!--            SEQ = #{seq}-->
+<!--    </update>-->
+
+<!--    <delete id="deleteDetail" parameterType="Field">-->
+<!--        DELETE WEB_FIELD_DETAIL-->
+<!--        WHERE FIELD_SEQ = #{seq}-->
+<!--    </delete>-->
+    <!-- 게시글 총 개수 -->
+    <select id="listTotalCount" resultType="int">
+        SELECT COUNT(SEQ)
+        FROM WEB_AUTH_GRP
+        WHERE DEL_YN = 'N'
+        <include refid="search"></include>
+    </select>
+</mapper>
