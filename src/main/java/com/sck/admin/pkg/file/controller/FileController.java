@@ -58,6 +58,7 @@ public class FileController {
 
             if(type.equals("image")){ // 파일 타입이 이미지일 경우 이미지파일 생성
                 log.info("파일 생성 경로 : " + uploadFile);
+
                 file.transferTo(new java.io.File(uploadFile));
                 /*map.put("fileName",fileName);
                 map.put("fileOriginalName",fileOriginalName);
