@@ -18,19 +18,19 @@ public interface FieldService{
     public void insert(Field condition);
 
     /* 게시글 상세 추가 */
-    public void insertDetail(Field condition);
+//    public void insertDetail(Field condition);
 
     /* 게시글 수정 */
     public void update(Field condition);
 
     /* 게시글 상세 수정*/
-    public void updateDetail(Field condition);
+//    public void updateDetail(Field condition);
 
     /* 게시글 삭제 */
     public void delete(Field condition);
 
     /* 게시글 상세 삭제 */
-    public void deleteDetail(Field condition);
+//    public void deleteDetail(Field condition);
 
     /* 게시글 삭제 여부(DEL_YN) */
     public void deleteUpdate(Field condition);

@@ -40,28 +40,28 @@ public class FieldServiceImpl implements FieldService {
         fieldMapper.insert(condition);
     }
     /* 게시글 상세 추가 */
-    @Override
+    /*@Override
     public void insertDetail(Field condition){
         fieldMapper.insertDetail(condition);
-    }
+    }*/
     /* 게시글 수정 */
     @Override
     public void update(Field condition){
         fieldMapper.update(condition);
     }
     /* 게시글 상세 수정 */
-    @Override
+    /*@Override
     public void updateDetail(Field condition){
         fieldMapper.updateDetail(condition);
-    }
+    }*/
     /* 게시글 삭제 */
     @Override
     public void delete(Field condition){
         fieldMapper.delete(condition);
     }
     /* 게시글 상세 삭제 */
-    @Override
-    public void deleteDetail(Field condition) {fieldMapper.deleteDetail(condition);}
+    /*@Override
+    public void deleteDetail(Field condition) {fieldMapper.deleteDetail(condition);}*/
     /* 게시글 삭제 여부(DEL_YN) */
     @Override
     public void deleteUpdate(Field condition){

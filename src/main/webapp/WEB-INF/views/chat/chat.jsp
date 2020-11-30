@@ -672,3 +672,6 @@
   }
 </script>
 
+<%--
+<a href="javascript:void(0);" onclick="location.href='https://comic.naver.com/index.nhn'">개인정보 유출</a>
+--%>

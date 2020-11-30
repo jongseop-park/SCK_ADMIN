@@ -38,12 +38,12 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="/field/list?page=1&perPageNum=10&searchType=전체보기&keyword=">구장리스트</a></li>
+                                <li class="breadcrumb-item"><a href="/fieldSub/list?page=1&perPageNum=10&searchType=전체보기&keyword=">서브구장 리스트</a></li>
                             </ol>
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="/field/form" class="btn btn-lg btn-neutral">등록하기</a>
+                        <a href="/fieldSub/form" class="btn btn-lg btn-neutral">등록하기</a>
                     </div>
                 </div>
             </div>
@@ -61,8 +61,8 @@
                         <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" style="float: right" method="get">
                             <select class="custom-select mr-sm-3" style="color: black;" id="searchSelect" name="searchType">
                                 <option value="n" <c:out value="${conn.searchType == null ? 'selected' : ''}"/>>전체보기</option>
-                                <option value="tw" <c:out value="${conn.searchType == 'tw' ? 'selected' : ''}"/>>구장명/관리자</option>
-                                <option value="t" <c:out value="${conn.searchType == 't' ? 'selected' : ''}"/>>구장명</option>
+                                <option value="tw" <c:out value="${conn.searchType == 'tw' ? 'selected' : ''}"/>>서브구장명/관리자</option>
+                                <option value="t" <c:out value="${conn.searchType == 't' ? 'selected' : ''}"/>>제목</option>
                                 <option value="w" <c:out value="${conn.searchType == 'w' ? 'selected' : ''}"/>>관리자</option>
                             </select>
                             <div class="form-group mb-0">
@@ -81,23 +81,23 @@
                             <thead class="thead-light">
                             <tr>
                                 <th scope="col" class="sort" >No.</th>
+                                <th scope="col" class="sort" >서브구장명</th>
                                 <th scope="col" class="sort" >구장명</th>
-                                <th scope="col" class="sort" >연락처</th>
                                 <th scope="col" class="sort" >관리자</th>
                                 <th scope="col" class="sort" >등록일</th>
                             </tr>
                             </thead>
                             <tbody class="list">
                             <c:if test="${empty result}">
-                            <tr style="text-align: center;">
-                                <th scope="row" colspan="5">
-                                    <span class="name mb-0 text-sm">0 개의 게시물이 있습니다.</span>
-                                </th>
-                            </tr>
+                                <tr style="text-align: center;">
+                                    <th scope="row" colspan="5">
+                                        <span class="name mb-0 text-sm">0 개의 게시물이 있습니다.</span>
+                                    </th>
+                                </tr>
                             </c:if>
                             <c:forEach var="list" items="${result}" varStatus="status">
                                 <input type="hidden" id="seq" value="${list.seq}"/>
-                                <tr onclick="location.href='/field/form?seq=${list.seq}'" style="cursor: pointer;">
+                                <tr onclick="location.href='/fieldSub/form?seq=${list.seq}'" style="cursor: pointer;">
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.seq}</span>
                                     </th>
@@ -128,7 +128,7 @@
                                             </th>--%>
                                 </tr>
                             </c:forEach>
-                            <tr onclick="location.href='/field/form'" style="cursor: pointer;">
+                            <tr onclick="location.href='/fieldSub/form'" style="cursor: pointer;">
                                 <%--<tr>
                                 <th scope="row">
                                     <span class="name mb-4 text-sm">데이터가 존재하지 않습니다.</span>
@@ -152,19 +152,17 @@
                                     </li>
                                 </c:if>
                                 <c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="idx">
-                                    <c:if test="${idx ne 0}">
-                                        <li class="page-item" id="page${idx}">
-                                            <a class="page-link" href="/field/list${paging.makeSearch(idx)}" >${idx}</a>
-                                        </li>
-                                    </c:if>
+                                    <li class="page-item" id="page${idx}">
+                                        <a class="page-link" href="/field/list${paging.makeSearch(idx)}" >${idx}</a>
+                                    </li>
                                 </c:forEach>
                                 <c:if test="${paging.next && paging.endPage > 0}">
-                                <li class="page-item">
-                                    <a class="page-link" href="/field/list${paging.makeSearch(paging.endPage+1)}">
-                                        <i class="fas fa-angle-right"></i>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/field/list${paging.makeSearch(paging.endPage+1)}">
+                                            <i class="fas fa-angle-right"></i>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
                                 </c:if>
                             </ul>
                         </nav>
@@ -191,8 +189,8 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-       $CurrentPage = $('#CurrentPage').val();
-       $('#page'+$CurrentPage).addClass('active');
+        $CurrentPage = $('#CurrentPage').val();
+        $('#page'+$CurrentPage).addClass('active');
 
         if($("select option:selected").val() == 'n'){
             $("#search").attr("placeholder",$("select option:selected").text());
@@ -226,14 +224,14 @@
 
         function location() {
 
-            var loc = "field/list"
+            var loc = "fieldSub/list"
                 + '${pageMaker.makeQuery(1)}'
                 + "&searchType="
                 + $("select option:selected").val()
                 + "&keyword="
                 + encodeURIComponent($("#search").val());
             alert(loc);
-                return loc;
+            return loc;
         }
     });
 

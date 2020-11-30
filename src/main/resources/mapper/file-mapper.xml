@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sck.admin.pkg.file.mapper.FileMapper">
+
+    <insert id="multiUpload" parameterType="File">
+        INSERT INTO WEB_FILE(SEQ, GROUP_SEQ, FILE_NAME, FILE_ORIG_NAME, FILE_PATH, FILE_TYPE, FILE_SIZE, REG_ID, REG_DATE, MOD_ID, MOD_DATE, ORDER_NO)
+        VALUES
+        (
+            WEB_FILE_SEQ.NEXTVAL, #{groupSeq}, #{fileName}, #{fileOrigName}, #{filePath}, #{fileType}, #{fileSize}, '사용자', SYSDATE, '사용자', SYSDATE, '')
+        )
+    </insert>
+    <update id="multiUpdate" parameterType="File">
+
+    </update>
+</mapper>

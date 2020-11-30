@@ -59,7 +59,6 @@
     <div class="container-fluid mt--6">
         <div class="row">
             <div class="col">
-
                 <div class="card">
                     <div class="card-header bg-dark">
                         <div class="row align-items-center">
@@ -84,8 +83,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="form-control-label" for="fieldName">구장</label>
-                                                    <input type="text" id="fieldName" class="form-control" placeholder="구장" value="${result.fieldName}" >
+                                                    <label class="form-control-label" for="fieldName">구장명</label>
+                                                    <input type="text" id="fieldName" class="form-control" placeholder="구장명" value="${result.fieldName}" >
                                                 </div>
                                             </div>
                                         </div>
@@ -110,89 +109,7 @@
                                             <textarea rows="4" class="form-control" id="fieldRefund" placeholder="환불규정">${result.fieldRefund}</textarea>
                                         </div>
                                     </div>
-                                    <div class="pl-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-control-label">구장선택</label>
-                                            <input class="btn-sm btn-primary" type="button" id="fieldBtnAdd" value="추가">
-                                            <input class="btn-sm btn-primary" type="button" id="fieldBtnDelete" value="삭제">
-                                            <div class="row" id="field_line1">
-                                                <c:forEach var="item" items="${result.fieldDetail}" varStatus="status">
-                                                    <input class="form-control-sm field-select" type="button" name="fields" data-value="${status.count}" value="${item.fieldSubName}"/>
-                                                </c:forEach>
-                                            </div>
-                                            <div class="row" id="field_line2">
-                                            </div>
-                                            <div class="row" id="field_line3">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- 구장상세 입력폼 -->
-                                    <div id="fieldDetails">
-                                        <c:forEach var="item" items="${result.fieldDetail}" varStatus="status">
-                                            <div name="fieldDetail" style="display:none;">
-                                                <input type="hidden" name="detailSeq" value="${item.seq}"}>
-                                                <hr class="my-4" />
-                                                <h3 class="heading-title text-blue mb-3" style="margin-left: 1%;" name="fieldDetailTitles" data-value="${status.count}">${item.fieldSubName}</h3>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">구장명</label>
-                                                        <input type="text" name="fieldSubName" data-value="${status.count}" class="form-control" placeholder="서브 구장명 변경" value="${item.fieldSubName}" maxlength="10">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">대여품</label>
-                                                        <input type="text" name="fieldRental" class="form-control" placeholder="유니폼 / 축구화 / 공" value="${item.fieldRental}" >
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">시설</label>
-                                                        <div class="row">
-                                                            <label style="margin-left: 20px;"><input type="checkbox" name="fieldShower" <c:if test="${item.fieldShower eq 1}">checked="checked"</c:if>/>샤워시설</label>
-                                                            <label style="margin-left: 20px;"><input type="checkbox" name="fieldParking" <c:if test="${item.fieldParking eq 1}">checked="checked"</c:if>/>주차시설</label>
-                                                            <label style="margin-left: 20px;"><input type="checkbox" name="fieldDrink" <c:if test="${item.fieldDrink eq 1}">checked="checked"</c:if>/>음료판매</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">구장정보</label>
-                                                        <textarea rows="4" class="form-control" name="fieldInfo" placeholder="구장정보">${item.fieldInfo}</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">구장 이미지 (최대 10개)</label>
-                                                        <div>
-                                                            <button type="button" class="field-detail-img"          data-value="${status.count}" name="fieldImg" value="false">이미지1</button>
-                                                            <button type="button" class="field-detail-img rear-img" data-value="${status.count}" name="fieldImg" value="false">이미지2</button>
-                                                            <button type="button" class="field-detail-img rear-img" data-value="${status.count}" name="fieldImg" value="false">이미지3</button>
-                                                            <button type="button" class="field-detail-img rear-img" data-value="${status.count}" name="fieldImg" value="false">이미지4</button>
-                                                            <button type="button" class="field-detail-img rear-img" data-value="${status.count}" name="fieldImg" value="false">이미지5</button>
-                                                            <button type="button" class="field-detail-img"          data-value="${status.count}" name="fieldImg" value="false">이미지6</button>
-                                                            <button type="button" class="field-detail-img rear-img" data-value="${status.count}" name="fieldImg" value="false">이미지7</button>
-                                                            <button type="button" class="field-detail-img rear-img" data-value="${status.count}" name="fieldImg" value="false">이미지8</button>
-                                                            <button type="button" class="field-detail-img rear-img" data-value="${status.count}" name="fieldImg" value="false">이미지9</button>
-                                                            <button type="button" class="field-detail-img rear-img" data-value="${status.count}" name="fieldImg" value="false">이미지10</button>
-                                                        </div>
-                                                        <div class="div-field-img">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                            <input type="file" name="fieldImgFile" accept="image/*">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </div>
+
                                     <!-- /구장상세 입력폼 -->
                                     <div class="col-lg-6 col-5 text-right" style="float: right">
                                         <c:if test="${isUpdate eq false}">
@@ -239,123 +156,13 @@
         var $btnDelete = $('#btnDelete'); // 삭제
         var $btnCancle = $('#btnCancel'); // 취소
 
-        var $fieldBtnAdd = $('#fieldBtnAdd'); // 구장 추가
-        var $fieldBtnDelete = $('#fieldBtnDelete'); // 구장 삭제
-        var $field_line1 = $('#field_line1'); // 1 ~ 5 구장
-        var $field_line2 = $('#field_line2'); // 6 ~ 10 구장
-        var $field_line3 = $('#field_line3'); // 11 ~ 15 구장
-        let fieldCnt = $('[name=fields]').length;
-        var $fieldDetails = $("#fieldDetails"); // 구장 상세 div
         var $seq = $('#seq');
         var $fieldName = $('#fieldName'); // 구장
         var $fieldAddress = $('#fieldAddress'); // 주소
         var $fieldTel = $('#fieldTel'); // 연락처
         var $fieldRefund = $('#fieldRefund'); // 환불규정
-        var fieldList = []; // DB에 저장될 값
-        var detailDelObj;
-        var fileObject; // input file name
-        var imgBtn;
         var isUpdate = "${isUpdate}";
-        var fileData;
-        $fieldBtnAdd.on("click",function(){
-            if(fieldCnt >= 0 && fieldCnt < 5){
-                fieldCnt++;
-                $field_line1.append("<input class='form-control-sm field-select' type='button' data-value='"+fieldCnt+"' name='fields' value='"+fieldCnt+"구장'/>");
-                addDetail();
-            } else if(fieldCnt >= 5 && fieldCnt < 10){
-                fieldCnt++;
-                $field_line2.append("<input class='form-control-sm field-select' type='button' data-value='"+fieldCnt+"' name='fields' value='"+fieldCnt+"구장'/>");
-                addDetail();
-            }else if(fieldCnt >= 10 && fieldCnt < 15){
-                fieldCnt++;
-                $field_line3.append("<input class='form-control-sm field-select' type='button' data-value='"+fieldCnt+"' name='fields'  value='"+fieldCnt+"구장'/>");
-                addDetail();
-            } else {
-                alert("구장은 최대 15개까지 생성 가능합니다.");
-            }
 
-        });
-
-        // 구장 삭제버튼 클릭 이벤트
-        $fieldBtnDelete.on("click",function(){
-            var divfieldDetail = $('div[name=fieldDetail]').eq(fieldCnt-1)
-            var delYnSeq =  divfieldDetail.find($("[name=detailSeq]")).val();
-            if(fieldCnt != 0){
-                if(delYnSeq == '') {
-                    alert(delYnSeq);
-                    $('input[name=fields]').eq(fieldCnt - 1).remove();
-                    $('div[name=fieldDetail]').eq(fieldCnt - 1).remove();
-
-                } else {
-                    detailDelObj = {
-                        "seq" : divfieldDetail.find("[name=detailSeq]").val(),
-                        "fieldSeq" : $seq.val(),
-                        "fieldSubName" : divfieldDetail.find("[name=fieldSubName]").val(),
-                        "fieldRental" : divfieldDetail.find("[name=fieldRental]").val(),
-                        "fieldShower" : divfieldDetail.find("[name=fieldShower]").is(":checked") == true ? 1 : 0,
-                        "fieldParking" : divfieldDetail.find("[name=fieldParking]").is(":checked") == true ? 1 : 0,
-                        "fieldDrink" : divfieldDetail.find("[name=fieldDrink]").is(":checked") == true ? 1 : 0,
-                        "fieldInfo" : divfieldDetail.find("[name=fieldInfo]").val(),
-                        "orderNo" : 0,
-                        "delYn" : 'Y'
-                    }
-                    console.log(detailDelObj);
-                    $('input[name=fields]').eq(fieldCnt - 1).remove();
-                    $('div[name=fieldDetail]').eq(fieldCnt - 1).remove();
-                }
-                fieldCnt--;
-            }
-        });
-
-        // 구장명 입력 시 구장버튼 이름 변경
-        $(document).on("keyup","input[name=fieldSubName]",function(){
-            $("input[name=fields]").eq($(this).data("value")-1).val($(this).val());
-            $("h3[name=fieldDetailTitles]").eq($(this).data("value")-1).text($(this).val());
-        })
-
-        // 구장 클릭 이벤트
-        $(document).on("click","input[name=fields]",function(){
-            $("input[name=fields]").css("font-weight","normal");
-            $("input[name=fields]").css("font-size","0.75rem");
-            $("input[name=fields]").eq($(this).data("value")-1).css("font-weight","bold");
-            $("input[name=fields]").eq($(this).data("value")-1).css("font-size","1rem");
-            $("div[name=fieldDetail]").hide(); // 구장 상세 전체 숨기기
-            $("div[name=fieldDetail]").eq($(this).data("value")-1).show(); // 클릭한 구장의 상세만 보여줌
-
-        })
-
-        // 이미지 클릭 이벤트
-        $(document).on("click","button[name=fieldImg]",function (evt) {
-            imgBtn = $(this);
-            fileObject = $(this).parent().next().children().eq(imgBtn.index());
-
-            if($(this).val() == "false") {
-                fileObject.click();
-            } else if ($(this).val() == "true"){
-                if(confirmImg() == true) { // 컨펌의 return이 true일 경우 이미지 삭제
-                    $(this).text('이미지' + (imgBtn.index() + 1));
-                    $(this).val("false");
-                    fileObject.val('');
-                }
-            }
-        })
-
-        // 이미지 추가/변경 시 이벤트
-        $(document).on("change","input[name=fieldImgFile]",function (e) {
-            var img = e.target.files[0];
-            var fileReader = new FileReader();
-            fileReader.readAsDataURL(img);
-            fileReader.onload = function (event) {
-                var image = new Image();
-                image.style.width = '100%';
-                image.style.height = '100%';
-                image.src = event.target.result;
-                imgBtn.empty();
-                imgBtn.append(image);
-                imgBtn.val('true');
-            }
-        })
-        
         // 저장
         $btnSave.on("click",function(){
             if(fieldCnt > 0){
@@ -367,12 +174,7 @@
         });
         // 수정
         $btnUpdate.on("click",function(){
-            if(fieldCnt > 0){
-                fieldData();
-                // Save(fieldData());
-            } else {
-                alert("구장의 개수는 최소 1개 이상이어야 합니다.");
-            }
+            Save(fieldData());
         });
         // 삭제(DEL_YN = 'Y')
         $btnDelete.on("click",function(){
@@ -385,42 +187,15 @@
         $btnCancle.on("click",function(){
             window.history.back();
         });
-        // 이미지 삭제 컨펌
-        function confirmImg(){
-            var confirmImg = confirm("이미지를 삭제하시겠습니까?");
-            if (confirmImg == true){
-                return true;
-            } else if(confirmImg == false){
-                return false;
-            }
-        }
+
 
         function fieldData(){
-            $("div[name=fieldDetail]").each(function (index,item) {
 
-                var obj = {
-                    "seq" : $(item).find("[name=detailSeq]").val(),
-                    "fieldSeq" : $seq.val(),
-                    "fieldSubName" : $(item).find("[name=fieldSubName]").val(),
-                    "fieldRental" : $(item).find("[name=fieldRental]").val(),
-                    "fieldShower" : $(item).find("[name=fieldShower]").is(":checked") == true ? 1 : 0,
-                    "fieldParking" : $(item).find("[name=fieldParking]").is(":checked") == true ? 1 : 0,
-                    "fieldDrink" : $(item).find("[name=fieldDrink]").is(":checked") == true ? 1 : 0,
-                    "fieldInfo" : $(item).find("[name=fieldInfo]").val(),
-                    "orderNo" : index,
-                    "delYn" : 'N'
-                }
-                fieldList.push(obj);
-            });
-            if(detailDelObj != null) {
-                fieldList.push(detailDelObj);
-            }
             var data = {
                 "fieldName" : $fieldName.val(),
                 "fieldAddress" : $fieldAddress.val(),
                 "fieldTel" : $fieldTel.val(),
-                "fieldRefund" : $fieldRefund.val(),
-                "fieldDetail" : fieldList
+                "fieldRefund" : $fieldRefund.val()
             };
             if($seq.val() != ''){
                 data["seq"] = $seq.val();
@@ -431,91 +206,7 @@
                 data["modId"] = "<%=username%>";
             }
 
-            fileData = [];
-            var formData = new FormData();
-            for(var i = 0; i<$("[name=fieldImgFile]").length; i++){
-                var file = $("[name=fieldImgFile]").eq(i)[0].files[0];
-                if(file != null){
-                    // fileData.push({fileName : file.name, fileType : file.type, fileSize : file.size, orderNo : i});
-                    formData.append("file",file);
-                    console.log(i);
-                }
-            }
-            for(var key of formData.keys()){
-                console.log(key);
-            }
-
-            for(var value of formData.values()){
-                console.log(value);
-            }
-            upload(formData)
             return data;
-        }
-
-        // 구장 상세입력칸 생성
-        function addDetail(){
-            $("#fieldDetails").append("<div name='fieldDetail' style='display:none;' data-value='"+fieldCnt+"'>" +
-                "<hr class='my-4' />" +
-                "<h3 class='heading-title text-blue mb-3' style='margin-left: 1%;' name='fieldDetailTitles' data-value='"+fieldCnt+"'>"+fieldCnt+"구장</h3>" +
-                "<div class='col-md-12'>" +
-                "<div class='form-group'>" +
-                "<label class='form-control-label'>구장명</label>" +
-                "<input type='text' name='fieldSubName' class='form-control' data-value='"+fieldCnt+"' placeholder='서브 구장명 변경' value='"+fieldCnt+"구장' maxlength='10'>" +
-                "</div>" +
-                "</div>" +
-                "<div class='col-md-12'>" +
-                "<div class='form-group'>" +
-                "<label class='form-control-label'>대여품</label>" +
-                "<input type='text' name='fieldRental' class='form-control' placeholder='유니폼 / 축구화 / 공' value='' >" +
-                "</div>" +
-                "</div>" +
-                "<div class='col-md-12'>" +
-                "<div class='form-group'>" +
-                "<label class='form-control-label'>시설</label>" +
-                "<div class='row'>" +
-                "<label style='margin-left: 20px;'><input type='checkbox' name='fieldShower'/>샤워시설</label>" +
-                "<label style='margin-left: 20px;'><input type='checkbox' name='fieldParking'/>주차시설</label>" +
-                "<label style='margin-left: 20px;'><input type='checkbox' name='fieldDrink'/>음료판매</label>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "<div class='col-md-12'>" +
-                "<div class='form-group'>" +
-                "<label class='form-control-label'>구장정보" +
-                "</label>" +
-                "<textarea rows='4' class='form-control' name='fieldInfo' placeholder='구장정보'></textarea>" +
-                "</div>" +
-                "</div>" +
-                "<div class='col-md-12'>" +
-                "<div class='form-group'>" +
-                "<label class='form-control-label'>구장 이미지 (최대 10개)</label>" +
-                "<div>" +
-                "<button type='button' class='field-detail-img'          data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지1</button>" +
-                "<button type='button' class='field-detail-img rear-img' data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지2</button>" +
-                "<button type='button' class='field-detail-img rear-img' data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지3</button>" +
-                "<button type='button' class='field-detail-img rear-img' data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지4</button>" +
-                "<button type='button' class='field-detail-img rear-img' data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지5</button>" +
-                "<button type='button' class='field-detail-img'          data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지6</button>" +
-                "<button type='button' class='field-detail-img rear-img' data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지7</button>" +
-                "<button type='button' class='field-detail-img rear-img' data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지8</button>" +
-                "<button type='button' class='field-detail-img rear-img' data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지9</button>" +
-                "<button type='button' class='field-detail-img rear-img' data-value='"+fieldCnt+"' name='fieldImg' value='false'>이미지10</button>" +
-                "</div>" +
-                "<div class='div-field-img'>" +
-                "<input type='file' name='fieldImgFile' accept='image/*'>" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "<input type='file' name='fieldImgFile' accept='image/*' >" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>");
         }
 
         function Save(object) {
@@ -526,7 +217,6 @@
                 processData : false, // 파일전송 시 사용. query string 설정
                 data : JSON.stringify(object),
                 success : function () {
-                    upload(fileData);
                     if(${isUpdate eq false}){
                         alert("등록이 완료되었습니다.");
                     } else {

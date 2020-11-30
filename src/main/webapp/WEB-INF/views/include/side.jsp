@@ -47,6 +47,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/fieldSub/list?page=1&perPageNum=10&searchType=n&keyword=" onclick="location.href='/field/list?page=1&perPageNum=10&searchType=n&keyword='">
+                            <i class="ni ni-bullet-list-67 text-default"></i>
+                            <span class="nav-link-text">서브구장 리스트</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/field/price">
                             <i class="ni ni-bullet-list-67 text-default"></i>
                             <span class="nav-link-text">구장별 금액</span>
@@ -62,6 +68,14 @@
                         <a class="nav-link" href="/room">
                             <i class="ni ni-bullet-list-67 text-default"></i>
                             <span class="nav-link-text">채팅방</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/sample">
+                            <i class="ni ni-bullet-list-67 text-default"></i>
+                            <span class="nav-link-text">테스트</span>
                         </a>
                     </li>
                 </ul>

@@ -5,15 +5,11 @@ import com.sck.admin.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,19 +30,24 @@ public class FileController {
     @ResponseBody
     public Map<String, Object> multiUpload(MultipartHttpServletRequest request) throws IOException {
         //MultipartHttpServletRequest > HttpServletRequest 대신 사용하며 HttpServletRequest와 MultipartRequest 인터페이스를 상속받음
+        String[] seq = request.getParameterValues("seq");
+        String groupSeq = request.getParameter("groupSeq"); // 그룹 시퀀스
+        String adminId = request.getParameter("adminId");
+        String[] orderNo = request.getParameterValues("orderNo");
 
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
         List<File> fileUploadList = new ArrayList<>();
         List<MultipartFile> files = request.getFiles("file");
-        
+
         int count = 0;
         for (MultipartFile file : files){
             String type = files.get(count).getContentType().split("/")[0]; // 파일 Type 저장
-            java.io.File path = new java.io.File(rootPath+type); // rootPath + type
-            String fileOriginalName = files.get(count).getOriginalFilename(); // 실제파일명
-            String fileName = fileUtils.getRandomString(fileOriginalName); // 랜덤문자 + _실제파일명
+            String ext = files.get(count).getOriginalFilename().split("\\.")[1]; //  파일 확장자
+            java.io.File path = new java.io.File(rootPath+type+fileUtils.getDate()); // rootPath + type
+            String fileOrigName = files.get(count).getOriginalFilename(); // 실제파일명
+            String fileName = fileUtils.getRandomString(fileOrigName); // 랜덤문자 + _실제파일명
             String uploadFile = path + "\\" + fileName; // 저장할 파일경로 + 파일명
-
+            System.out.println(ext);
             if(!path.exists()){ // 파일 경로 확인 후 없을 시 폴더 생성
                 try{
                     path.mkdirs();
@@ -58,20 +59,33 @@ public class FileController {
 
             if(type.equals("image")){ // 파일 타입이 이미지일 경우 이미지파일 생성
                 log.info("파일 생성 경로 : " + uploadFile);
-
                 file.transferTo(new java.io.File(uploadFile));
-                /*map.put("fileName",fileName);
-                map.put("fileOriginalName",fileOriginalName);
-                map.put("filePath",path);
-                map.put("fileType",type);
-                map.put("fileSize",files.get(count).getSize());
-                fileUploadList.add(map);*/
 
+                File conn = new File();
+                if(!groupSeq.equals("")){ // 수정일 시
+                    conn.setGroupSeq(groupSeq);
+                    conn.setModId(adminId);
+                } else {
+                    conn.setRegId(adminId);
+                }
+                conn.setSeq(seq[count]);
+                conn.setFileName(fileName);
+                conn.setFileOrigName(fileOrigName);
+                conn.setFilePath(path+"\\");
+                conn.setFileType(ext);
+                conn.setFileSize(files.get(count).getSize()+"");
+                conn.setOrderNo(orderNo[count]);
+
+                fileUploadList.add(conn);
+            } else {
+                resultMap.put("result","Data Not Exist");
+                return resultMap;
             }
             count++;
         }
-        System.out.println(fileUploadList);
-        return map;
+        resultMap.put("result",fileUploadList);
+
+        return resultMap;
     }
 }
 // String saveDirectory = request.getSession().getServletContext().getRealPath("/resources/static/images"); 상대경로

@@ -1,3 +1,5 @@
+
+
 function upload(data) {
     $.ajax({
         url : "/file/multiUpload",
@@ -6,7 +8,7 @@ function upload(data) {
         contentType : false,
         data : data,
         success : function (data) {
-
+            // console.log(data);
 
         }, error : function (jqxhr) {
             alert("실패");

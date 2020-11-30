@@ -1,6 +1,8 @@
 package com.sck.admin.domain;
 
-public class FieldDetail {
+import java.util.List;
+
+public class FieldSub {
 
     /** 시퀀스 */
     private String seq;
@@ -21,8 +23,12 @@ public class FieldDetail {
     /** 구장순서 */
     private String orderNo;
     /** 구장 이미지 시퀀스 */
+
     /** 삭제여부 */
     private String delYn;
+
+    /** 부모리스트(Field) */
+    private List<Field> parentList;
 
     public String getSeq() {
         return seq;

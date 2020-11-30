@@ -28,8 +28,6 @@ public class Field extends Criteria {
     /** 삭제여부 */
     private String delYn;
 
-    /** WEB_FIELD_DETAIL 테이블 */
-    private List<FieldDetail> fieldDetail;
 
     public String getSeq() {
         return seq;
@@ -111,11 +109,4 @@ public class Field extends Criteria {
         this.delYn = delYn;
     }
 
-    public List<FieldDetail> getFieldDetail() {
-        return fieldDetail;
-    }
-
-    public void setFieldDetail(List<FieldDetail> fieldDetail) {
-        this.fieldDetail = fieldDetail;
-    }
 }

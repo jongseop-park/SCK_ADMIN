@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sck.admin.pkg.field.mapper.FieldMapper">
 
-    <resultMap id="FieldMap" type="Field">
+    <!--<resultMap id="FieldMap" type="Field">
         <id property="seq" column="SEQ"/>
         <result property="fieldName" column="FIELD_NAME"/>
         <result property="fieldAddress" column="FIELD_ADDRESS"/>
@@ -27,7 +27,7 @@
             <result property="orderNo" column="ORDER_NO"/>
             <result property="delYn" column="DEL_YN"/>
         </collection>
-    </resultMap>
+    </resultMap>-->
 
     <sql id="cmmnOrder">
         ORDER BY SEQ DESC
@@ -74,7 +74,7 @@
     </select>
 
     <!-- 게시글 상세 -->
-    <select id="findByDetail" resultMap="FieldMap" parameterType="Field">
+    <select id="findByDetail" resultType="Field" parameterType="Field">
         SELECT
             A.SEQ,
             A.FIELD_NAME,
@@ -85,21 +85,9 @@
             A.REG_ID,
             A.REG_DATE,
             A.MOD_ID,
-            A.MOD_DATE,
-            B.SEQ WEB_FIELD_DETAIL_SEQ,
-            B.FIELD_SEQ,
-            B.FIELD_SUB_NAME,
-            B.FIELD_RENTAL,
-            B.FIELD_SHOWER,
-            B.FIELD_PARKING,
-            B.FIELD_DRINK,
-            B.FIELD_INFO,
-            B.ORDER_NO,
-            B.DEL_YN
-        FROM WEB_FIELD A LEFT OUTER JOIN WEB_FIELD_DETAIL B
-        ON A.SEQ = B.FIELD_SEQ
-        WHERE A.SEQ = #{seq,jdbcType=VARCHAR}
-        ORDER BY B.ORDER_NO ASC
+            A.MOD_DATE
+        FROM WEB_FIELD A
+        WHERE A.SEQ = #{seq}
     </select>
 
     <!-- 게시글 추가 -->
@@ -113,13 +101,13 @@
         (#{seq}, #{fieldName}, #{fieldAddress}, #{fieldTel}, #{fieldRefund}, #{regId}, SYSDATE, 'N' )
     </insert>
 
-    <insert id="insertDetail" parameterType="Field">
+   <!-- <insert id="insertDetail" parameterType="Field">
         <foreach collection="fieldDetail" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL" index="index">
             INTO WEB_FIELD_DETAIL (SEQ, FIELD_SEQ, FIELD_SUB_NAME, FIELD_RENTAL, FIELD_SHOWER, FIELD_PARKING, FIELD_DRINK, FIELD_INFO, ORDER_NO, DEL_YN)
             VALUES
             (GET_WEB_FIELD_DETAIL_SEQ, #{seq}, #{item.fieldSubName}, #{item.fieldRental}, #{item.fieldShower}, #{item.fieldParking}, #{item.fieldDrink}, #{item.fieldInfo}, #{item.orderNo}, #{item.delYn})
         </foreach>
-    </insert>
+    </insert>-->
     <!-- INSERT ALL에는 시퀀스가 자동으로 증가되지 않기 때문에 함수를 만들어서 사용.
     create or replace FUNCTION GET_WEB_EVENTS_HALL_SEQ RETURN NUMBER IS
     BEGIN
@@ -141,7 +129,7 @@
             SEQ = #{seq}
     </update>
 
-    <update id="updateDetail" parameterType="Field">
+    <!--<update id="updateDetail" parameterType="Field">
         MERGE INTO WEB_FIELD_DETAIL A /* 병합쿼리 새로운 데이터 A */
         USING (
         <foreach collection="fieldDetail" item="item" separator=" UNION ALL ">
@@ -175,7 +163,7 @@
         WHEN NOT MATCHED THEN /* 조건이 다르면 INSERT */
         INSERT(A.SEQ, A.FIELD_SEQ, A.FIELD_SUB_NAME, A.FIELD_RENTAL, A.FIELD_SHOWER, A.FIELD_PARKING, A.FIELD_DRINK, A.FIELD_INFO, A.ORDER_NO, A.DEL_YN)
         VALUES(WEB_FIELD_DETAIL_SEQ.NEXTVAL, #{seq}, B.FIELD_SUB_NAME, B.FIELD_RENTAL, B.FIELD_SHOWER, B.FIELD_PARKING, B.FIELD_DRINK, B.FIELD_INFO, B.ORDER_NO, B.DEL_YN)
-    </update>
+    </update>-->
     <!-- 게시글 삭제 -->
     <delete id="delete" parameterType="Field">
         DELETE FROM WEB_FIELD
@@ -190,10 +178,10 @@
             SEQ = #{seq}
     </update>
 
-    <delete id="deleteDetail" parameterType="Field">
+   <!-- <delete id="deleteDetail" parameterType="Field">
         DELETE WEB_FIELD_DETAIL
         WHERE FIELD_SEQ = #{seq}
-    </delete>
+    </delete>-->
     <!-- 게시글 총 개수 -->
     <select id="listTotalCount" resultType="int">
         SELECT COUNT(SEQ)

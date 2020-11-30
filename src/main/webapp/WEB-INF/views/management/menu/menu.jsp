@@ -52,7 +52,7 @@
     <div class="container-fluid mt--6">
       <div class="row">
         <!-- left div -->
-        <div class="col-xl-4 order-xl-1" id="menuList">
+        <div class="col-xl-6 order-xl-1" id="menuList">
           <div class="card card-profile">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">
@@ -76,7 +76,7 @@
           </div>
         </div>
         <!-- right div -->
-        <div class="col-xl-8 order-xl-2" id="menuEdit" style="display: none;">
+        <div class="col-xl-6 order-xl-2" id="menuEdit" style="display: none;">
           <div class="card" style="width: 100%; height: 100%;">
             <div class="card-header">
               <div class="row align-items-center">
@@ -94,7 +94,7 @@
                 <input type="hidden" />
                 <div class="pl-lg-4">
                   <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="menuName">메뉴명</label>
                         <input type="text" id="menuName" class="form-control" value="">
@@ -104,7 +104,7 @@
                 </div>
                 <div class="pl-lg-4">
                   <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="menuUrl">메뉴URL</label>
                         <input type="text" id="menuUrl" class="form-control"  value="">
@@ -114,7 +114,7 @@
                 </div>
                 <div class="pl-lg-4">
                   <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                       <label class="form-control-label">메뉴사용여부</label>
                       <div class="form-group">
                         <label><input type="radio" name="useYn" value="Y">사용</label>

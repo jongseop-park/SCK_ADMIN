@@ -3,7 +3,7 @@ package com.sck.admin.pkg.field.controller;
 import com.sck.admin.core.domain.Paging;
 import com.sck.admin.core.domain.Search;
 import com.sck.admin.domain.Field;
-import com.sck.admin.domain.FieldDetail;
+import com.sck.admin.domain.FieldSub;
 import com.sck.admin.pkg.field.service.FieldService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -68,18 +68,18 @@ public class FieldController { // 구장 관리
     @RequestMapping("/save")
     @ResponseBody
     public Field save(@RequestBody Field condition) { /* @PathVariable("id") String id  > Mapping {id} 중괄호에 명시된 값을 변수로 받음*/
-        List<FieldDetail> fieldDetail = condition.getFieldDetail();
+//        List<FieldSub> fieldDetail = condition.getFieldDetail();
 
         // 시퀀스 존재여부에 따라 insert, update 처리
         if (StringUtils.isEmpty(condition.getSeq())) {
             fieldService.insert(condition);
-            fieldService.insertDetail(condition);
+//            fieldService.insertDetail(condition);
             log.info("==================================================================");
             log.info("field/save");
             log.info("insert");
         } else {
             fieldService.update(condition);
-            fieldService.updateDetail(condition);
+//            fieldService.updateDetail(condition);
             log.info("==================================================================");
             log.info("field/save");
             log.info("update");
@@ -92,7 +92,7 @@ public class FieldController { // 구장 관리
     public Field delete(@RequestBody Field condition){
 
         fieldService.deleteUpdate(condition); // 게시물 삭제
-        fieldService.deleteDetail(condition); // 게시물 상세 삭제
+//        fieldService.deleteDetail(condition); // 게시물 상세 삭제
         log.info("==================================================================");
         log.info("field/delete");
 

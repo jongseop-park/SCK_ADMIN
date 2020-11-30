@@ -8,6 +8,8 @@ public class File {
     private String groupSeq;
     /** 파일명 */
     private String fileName;
+    /** 실제파일 명 */
+    private String fileOrigName;
     /** 파일 경로 */
     private String filePath;
     /** 파일 타입 */
@@ -16,6 +18,14 @@ public class File {
     private String fileSize;
     /** 정렬 순서 */
     private String orderNo;
+    /** 등록자 */
+    private String regId;
+    /** 등록일자 */
+    private String regDate;
+    /** 수정자 */
+    private String modId;
+    /** 수정일자 */
+    private String modDate;
 
     public String getSeq() {
         return seq;
@@ -39,6 +49,14 @@ public class File {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getFileOrigName() {
+        return fileOrigName;
+    }
+
+    public void setFileOrigName(String fileOrigName) {
+        this.fileOrigName = fileOrigName;
     }
 
     public String getFilePath() {
@@ -71,5 +89,37 @@ public class File {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public String getRegId() {
+        return regId;
+    }
+
+    public void setRegId(String regId) {
+        this.regId = regId;
+    }
+
+    public String getRegDate() {
+        return regDate;
+    }
+
+    public void setRegDate(String regDate) {
+        this.regDate = regDate;
+    }
+
+    public String getModId() {
+        return modId;
+    }
+
+    public void setModId(String modId) {
+        this.modId = modId;
+    }
+
+    public String getModDate() {
+        return modDate;
+    }
+
+    public void setModDate(String modDate) {
+        this.modDate = modDate;
     }
 }
