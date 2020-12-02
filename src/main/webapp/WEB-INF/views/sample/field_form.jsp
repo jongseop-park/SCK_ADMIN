@@ -348,7 +348,7 @@
         }
 
         function fieldData(){
-            var fieldList = []; // DB에 저장될 값
+            var fieldMainList = []; // DB에 저장될 값
             $("div[name=fieldDetail]").each(function (index,item) { // index  item
                 var obj = {
                     "seq" : $(item).find("[name=detailSeq]").val(),
@@ -362,19 +362,19 @@
                     "orderNo" : index,
                     "delYn" : 'N'
                 }
-                fieldList.push(obj);
+                fieldMainList.push(obj);
 
 
             });
             if(detailDelObj != null) {
-                fieldList.push(detailDelObj);
+                fieldMainList.push(detailDelObj);
             }
             var data = {
                 "fieldName" : $fieldName.val(),
                 "fieldAddress" : $fieldAddress.val(),
                 "fieldTel" : $fieldTel.val(),
                 "fieldRefund" : $fieldRefund.val(),
-                "fieldDetail" : fieldList
+                "fieldDetail" : fieldMainList
             };
             if($seq.val() != ''){
                 data["seq"] = $seq.val();

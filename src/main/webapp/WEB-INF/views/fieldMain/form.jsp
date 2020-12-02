@@ -40,7 +40,7 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="/field/list?page=1&perPageNum=10&searchType=전체보기&keyword=">리스트</a></li>
+                                <li class="breadcrumb-item"><a href="/fieldMain/list?page=1&perPageNum=10&searchType=전체보기&keyword=">서브구장 리스트</a></li>
                                 <c:if test="${isUpdate eq true}">
                                     <li class="breadcrumb-item">상세</li>
                                 </c:if>
@@ -83,8 +83,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="form-control-label" for="fieldName">구장명</label>
-                                                    <input type="text" id="fieldName" class="form-control" placeholder="구장명" value="${result.fieldName}" >
+                                                    <label class="form-control-label" for="fieldMainNm">메인구장명</label>
+                                                    <input type="text" id="fieldMainNm" class="form-control" placeholder="메인구장명" value="${result.fieldMainNm}" >
                                                 </div>
                                             </div>
                                         </div>
@@ -110,7 +110,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- /구장상세 입력폼 -->
                                     <div class="col-lg-6 col-5 text-right" style="float: right">
                                         <c:if test="${isUpdate eq false}">
                                             <input type="button" class="btn btn-lg btn-neutral" id="btnSave" value="등록">
@@ -157,7 +156,7 @@
         var $btnCancle = $('#btnCancel'); // 취소
 
         var $seq = $('#seq');
-        var $fieldName = $('#fieldName'); // 구장
+        var $fieldMainNm = $('#fieldMainNm'); // 구장
         var $fieldAddress = $('#fieldAddress'); // 주소
         var $fieldTel = $('#fieldTel'); // 연락처
         var $fieldRefund = $('#fieldRefund'); // 환불규정
@@ -192,7 +191,7 @@
         function fieldData(){
 
             var data = {
-                "fieldName" : $fieldName.val(),
+                "fieldMainNm" : $fieldMainNm.val(),
                 "fieldAddress" : $fieldAddress.val(),
                 "fieldTel" : $fieldTel.val(),
                 "fieldRefund" : $fieldRefund.val()
@@ -211,7 +210,7 @@
 
         function Save(object) {
             $.ajax({
-                url : "/field/save",
+                url : "/fieldMain/save",
                 type : "POST",
                 contentType : "application/json", // 명시하지 않으면 application/x-www-form-urlencoded; charset=UTF-8로 지정
                 processData : false, // 파일전송 시 사용. query string 설정
@@ -232,7 +231,7 @@
 
         function Delete(object) {
             $.ajax({
-                url : "/field/delete",
+                url : "/fieldMain/delete",
                 type : "POST",
                 contentType: "application/json",
                 data : JSON.stringify(object),

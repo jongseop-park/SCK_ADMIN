@@ -41,13 +41,13 @@
                 </h6>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/field/list?page=1&perPageNum=10&searchType=n&keyword=" onclick="location.href='/field/list?page=1&perPageNum=10&searchType=n&keyword='">
+                        <a class="nav-link" href="/fieldMain/list?page=1&perPageNum=10&searchType=n&keyword=" onclick="location.href='/fieldMain/list?page=1&perPageNum=10&searchType=n&keyword='">
                             <i class="ni ni-bullet-list-67 text-default"></i>
-                            <span class="nav-link-text">구장 리스트</span>
+                            <span class="nav-link-text">메인구장 리스트</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/fieldSub/list?page=1&perPageNum=10&searchType=n&keyword=" onclick="location.href='/field/list?page=1&perPageNum=10&searchType=n&keyword='">
+                        <a class="nav-link" href="/fieldSub/list?page=1&perPageNum=10&searchType=n&keyword=" onclick="location.href='/fieldSub/list?page=1&perPageNum=10&searchType=n&keyword='">
                             <i class="ni ni-bullet-list-67 text-default"></i>
                             <span class="nav-link-text">서브구장 리스트</span>
                         </a>

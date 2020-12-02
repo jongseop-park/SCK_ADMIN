@@ -9,7 +9,7 @@ public class FieldSub {
     /** 구장 시퀀스 */
     private String fieldSeq;
     /** 구장명 */
-    private String fieldSubName;
+    private String fieldSubNm;
     /** 대여품 */
     private String fieldRental;
     /** 샤워시설 */
@@ -22,13 +22,21 @@ public class FieldSub {
     private String fieldInfo;
     /** 구장순서 */
     private String orderNo;
+    /** 등록자 */
+    private String regId;
+    /** 등록일자 */
+    private String regDate;
+    /** 수정자 */
+    private String modId;
+    /** 수정일자 */
+    private String modDate;
     /** 구장 이미지 시퀀스 */
 
     /** 삭제여부 */
     private String delYn;
 
     /** 부모리스트(Field) */
-    private List<Field> parentList;
+    private List<FieldMain> fieldMainList;
 
     public String getSeq() {
         return seq;
@@ -46,12 +54,12 @@ public class FieldSub {
         this.fieldSeq = fieldSeq;
     }
 
-    public String getFieldSubName() {
-        return fieldSubName;
+    public String getFieldSubNm() {
+        return fieldSubNm;
     }
 
-    public void setFieldSubName(String fieldSubName) {
-        this.fieldSubName = fieldSubName;
+    public void setFieldSubNm(String fieldSubNm) {
+        this.fieldSubNm = fieldSubNm;
     }
 
     public String getFieldRental() {
@@ -102,11 +110,51 @@ public class FieldSub {
         this.orderNo = orderNo;
     }
 
+    public String getRegId() {
+        return regId;
+    }
+
+    public void setRegId(String regId) {
+        this.regId = regId;
+    }
+
+    public String getRegDate() {
+        return regDate;
+    }
+
+    public void setRegDate(String regDate) {
+        this.regDate = regDate;
+    }
+
+    public String getModId() {
+        return modId;
+    }
+
+    public void setModId(String modId) {
+        this.modId = modId;
+    }
+
+    public String getModDate() {
+        return modDate;
+    }
+
+    public void setModDate(String modDate) {
+        this.modDate = modDate;
+    }
+
     public String getDelYn() {
         return delYn;
     }
 
     public void setDelYn(String delYn) {
         this.delYn = delYn;
+    }
+
+    public List<FieldMain> getFieldMainList() {
+        return fieldMainList;
+    }
+
+    public void setFieldMainList(List<FieldMain> fieldMainList) {
+        this.fieldMainList = fieldMainList;
     }
 }

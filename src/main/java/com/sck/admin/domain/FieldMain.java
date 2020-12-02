@@ -5,12 +5,12 @@ import com.sck.admin.core.domain.Criteria;
 
 import java.util.List;
 
-public class Field extends Criteria {
+public class FieldMain extends Criteria {
 
     /** 시퀀스 */
     private String seq;
     /** 구장 */
-    private String fieldName;
+    private String fieldMainNm;
     /** 주소 */
     private String fieldAddress;
     /** 연락처 */
@@ -28,7 +28,6 @@ public class Field extends Criteria {
     /** 삭제여부 */
     private String delYn;
 
-
     public String getSeq() {
         return seq;
     }
@@ -37,12 +36,12 @@ public class Field extends Criteria {
         this.seq = seq;
     }
 
-    public String getFieldName() {
-        return fieldName;
+    public String getFieldMainNm() {
+        return fieldMainNm;
     }
 
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
+    public void setFieldMainNm(String fieldMainNm) {
+        this.fieldMainNm = fieldMainNm;
     }
 
     public String getFieldAddress() {
@@ -108,5 +107,4 @@ public class Field extends Criteria {
     public void setDelYn(String delYn) {
         this.delYn = delYn;
     }
-
 }

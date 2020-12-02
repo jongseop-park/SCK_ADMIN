@@ -57,12 +57,13 @@
                 <div class="card">
                     <!-- Card header -->
                     <div class="card-header bg-dark">
-                        <h2 class="mb-0" style="display: inline; color:white;">리스트</h2>
+                        <h2 class="mb-0" style="display: inline; color:white;">서브구장 리스트</h2>
                         <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" style="float: right" method="get">
-                            <select class="custom-select mr-sm-3" style="color: black;" id="searchSelect" name="searchType">
+                            <select class="custom-select mr-sm-3" style="color: black; width:15em;" id="searchSelect" name="searchType">
                                 <option value="n" <c:out value="${conn.searchType == null ? 'selected' : ''}"/>>전체보기</option>
-                                <option value="tw" <c:out value="${conn.searchType == 'tw' ? 'selected' : ''}"/>>서브구장명/관리자</option>
-                                <option value="t" <c:out value="${conn.searchType == 't' ? 'selected' : ''}"/>>제목</option>
+                                <option value="sn" <c:out value="${conn.searchType == 'sn' ? 'selected' : ''}"/>>서브구장명</option>
+                                <option value="fn" <c:out value="${conn.searchType == 'fn' ? 'selected' : ''}"/>>메인구장명</option>
+                                <option value="fno" <c:out value="${conn.searchType == 'fno' ? 'selected' : ''}"/>>메인구장번호</option>
                                 <option value="w" <c:out value="${conn.searchType == 'w' ? 'selected' : ''}"/>>관리자</option>
                             </select>
                             <div class="form-group mb-0">
@@ -83,9 +84,9 @@
                                 <th scope="col" class="sort" >No.</th>
                                 <th scope="col" class="sort" >서브구장명</th>
                                 <th scope="col" class="sort" >구장명</th>
+                                <th scope="col" class="sort" >구장번호</th>
                                 <th scope="col" class="sort" >관리자</th>
                                 <th scope="col" class="sort" >등록일</th>
-                                <th scope="col" class="sort" >구장사용여부</th>
                             </tr>
                             </thead>
                             <tbody class="list">
@@ -97,16 +98,20 @@
                                 </tr>
                             </c:if>
                             <c:forEach var="list" items="${result}" varStatus="status">
+                                <c:forEach var="mainList" items="${list.fieldMainList}">
                                 <input type="hidden" id="seq" value="${list.seq}"/>
                                 <tr onclick="location.href='/fieldSub/form?seq=${list.seq}'" style="cursor: pointer;">
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.seq}</span>
                                     </th>
                                     <th scope="row">
-                                        <span class="name mb-0 text-sm">${list.fieldName}</span>
+                                        <span class="name mb-0 text-sm">${list.fieldSubNm}</span>
                                     </th>
                                     <th scope="row">
-                                        <span class="name mb-0 text-sm">${list.fieldTel}</span>
+                                        <span class="name mb-0 text-sm">${mainList.fieldMainNm}</span>
+                                    </th>
+                                    <th scope="row">
+                                        <span class="name mb-0 text-sm">${list.fieldSeq}</span>
                                     </th>
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">
@@ -124,10 +129,8 @@
                                             </c:choose>
                                         </span>
                                     </th>
-                                    <th scope="row">
-                                        <span class="name mb-0 text-sm">${list.modDate}</span>
-                                    </th>
                                 </tr>
+                                </c:forEach>
                             </c:forEach>
                             <tr onclick="location.href='/fieldSub/form'" style="cursor: pointer;">
                                 <%--<tr>
@@ -210,11 +213,13 @@
             $("#search").val('');
             if($(this).val() == 'n') {
                 $("#search").attr("placeholder", "전체보기");
-            } else if($(this).val() == 'tw'){
-                $("#search").attr("placeholder", "제목/작성자 검색");
-            } else if($(this).val() == 't'){
-                $("#search").attr("placeholder", "제목 검색");
-            } else {
+            } else if($(this).val() == 'sn'){
+                $("#search").attr("placeholder", "서브구장명 검색");
+            } else if($(this).val() == 'fn'){
+                $("#search").attr("placeholder", "메인구장명 검색");
+            } else if($(this).val() == 'fno'){
+                $("#search").attr("placeholder", "메인구장번호 검색");
+            } else if($(this).val() == 'w'){
                 $("#search").attr("placeholder", "관리자 검색");
             }
         });
@@ -233,7 +238,6 @@
                 + $("select option:selected").val()
                 + "&keyword="
                 + encodeURIComponent($("#search").val());
-            alert(loc);
             return loc;
         }
     });

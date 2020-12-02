@@ -4,4 +4,171 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sck.admin.pkg.fieldSub.mapper.FieldSubMapper">
 
+    <resultMap id="fieldSubMap" type="FieldSub">
+        <id property="seq" column="SEQ"/>
+        <result property="fieldSeq" column="FIELD_SEQ"/>
+        <result property="fieldSubNm" column="FIELD_SUB_NM"/>
+        <result property="fieldRental" column="FIELD_RENTAL"/>
+        <result property="fieldShower" column="FIELD_SHOWER"/>
+        <result property="fieldParking" column="FIELD_PARKING"/>
+        <result property="fieldDrink" column="FIELD_DRINK"/>
+        <result property="fieldInfo" column="FIELD_INFO"/>
+        <result property="orderNo" column="ORDER_NO"/>
+        <result property="regId" column="REG_ID"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="modId" column="MOD_ID"/>
+        <result property="modDate" column="MOD_DATE"/>
+        <result property="delYn" column="DEL_YN"/>
+        <collection property="fieldMainList" ofType="FieldMain"> <!-- ofType = 클래스명 / property = 변수명 -->
+            <id property="seq" column="SEQ"/>
+            <result property="fieldMainNm" column="FIELD_MAIN_NM"/>
+        </collection>
+    </resultMap>
+
+    <sql id="cmmnOrder">
+        ORDER BY SEQ DESC
+    </sql>
+    <sql id="listOrder">
+        ORDER BY SEQ DESC, ORDER_NO ASC
+    </sql>
+
+    <sql id="search" >
+        <if test="searchType != null">
+            <if test="searchType == 'sn'.toString()">AND FIELD_SUB_NM LIKE '%' || #{keyword} || '%'</if>
+            <if test="searchType == 'fn'.toString()">AND FIELD_MAIN_NM LIKE '%' || #{keyword} || '%'</if>
+            <if test="searchType == 'fno'.toString()">AND FIELD_SEQ LIKE '%' || #{keyword} || '%'</if>
+            <if test="searchType == 'w'.toString()">AND (REG_ID LIKE '%' || #{keyword} || '%' OR MOD_ID LIKE '%' || #{keyword} || '%')</if>
+        </if>
+    </sql>
+
+    <!-- 전체 조회 -->
+    <select id="page" resultMap="fieldSubMap" parameterType="FieldSub">
+        SELECT
+            A.SEQ,
+            A.FIELD_SEQ,
+            A.FIELD_SUB_NM,
+            A.FIELD_RENTAL,
+            A.FIELD_SHOWER,
+            A.FIELD_PARKING,
+            A.FIELD_DRINK,
+            A.FIELD_INFO,
+            A.REG_ID,
+            TO_CHAR(A.REG_DATE,'YYYY-MM-DD HH24:MI') REG_DATE,
+            A.MOD_ID,
+            TO_CHAR(A.MOD_DATE,'YYYY-MM-DD HH24:MI') MOD_DATE,
+            A.ORDER_NO,
+            B.FIELD_MAIN_NM
+        FROM (
+            SELECT
+                SEQ,
+                FIELD_SEQ,
+                FIELD_SUB_NM,
+                FIELD_RENTAL,
+                FIELD_SHOWER,
+                FIELD_PARKING,
+                FIELD_DRINK,
+                FIELD_INFO,
+                REG_ID,
+                REG_DATE,
+                MOD_ID,
+                MOD_DATE,
+                ORDER_NO,
+                ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS ROW_NUM
+            FROM WEB_FIELD_SUB
+            WHERE DEL_YN = 'N'
+            <include refid="search"/>
+        ) A LEFT OUTER JOIN WEB_FIELD_MAIN B
+        ON A.FIELD_SEQ = B.SEQ
+        WHERE ROW_NUM BETWEEN #{rowStart} AND #{rowEnd}
+        <include refid="listOrder"/>
+    </select>
+
+    <select id="findByDetail" resultType="FieldSub" parameterType="FieldSub">
+        SELECT
+            SEQ,
+            FIELD_SEQ,
+            FIELD_SUB_NM,
+            FIELD_RENTAL,
+            FIELD_SHOWER,
+            FIELD_PARKING,
+            FIELD_DRINK,
+            FIELD_INFO,
+            REG_ID,
+            REG_DATE,
+            MOD_ID,
+            MOD_DATE,
+            ORDER_NO,
+            DEL_YN
+        FROM WEB_FIELD_SUB
+        WHERE SEQ = #{seq}
+    </select>
+
+    <insert id="insert" parameterType="FieldSub">
+        INSERT INTO WEB_FIELD_SUB
+        (
+            SEQ,
+            FIELD_SEQ,
+            FIELD_SUB_NM,
+            FIELD_RENTAL,
+            FIELD_SHOWER,
+            FIELD_PARKING,
+            FIELD_DRINK,
+            FIELD_INFO,
+            REG_ID,
+            REG_DATE,
+            ORDER_NO,
+            DEL_YN
+        )
+        VALUES
+        (
+            WEB_FIELD_SUB_SEQ.NEXTVAL,
+            #{fieldSeq},
+            #{fieldSubNm},
+            #{fieldRental},
+            #{fieldShower},
+            #{fieldParking},
+            #{fieldDrink},
+            #{fieldInfo},
+            #{regId},
+            SYSDATE,
+            #{orderNo},
+            'N'
+        )
+    </insert>
+
+    <update id="update" parameterType="FieldSub">
+        UPDATE WEB_FIELD_SUB
+        SET
+            FIELD_SEQ = #{fieldSeq},
+            FIELD_SUB_NM = #{fieldSubNm},
+            FIELD_RENTAL = #{fieldRental},
+            FIELD_SHOWER = #{fieldShower},
+            FIELD_PARKING = #{fieldParking},
+            FIELD_DRINK = #{fieldDrink},
+            FIELD_INFO = #{fieldInfo},
+            ORDER_NO = #{orderNo},
+            MOD_ID = #{modId},
+            MOD_DATE = SYSDATE
+        WHERE SEQ = #{seq}
+    </update>
+
+    <update id="delete" parameterType="FieldSub">
+        UPDATE WEB_FIELD_SUB
+        SET
+            DEL_YN = 'Y'
+        WHERE SEQ = #{seq}
+    </update>
+
+    <select id="subTotalCount" resultType="int">
+        SELECT COUNT(FIELD_SEQ)
+        FROM WEB_FIELD_SUB
+        WHERE FIELD_SEQ = #{fieldSeq} AND DEL_YN = 'N'
+    </select>
+
+    <select id="listTotalCount" resultType="int">
+        SELECT COUNT(SEQ)
+        FROM WEB_FIELD_SUB
+        WHERE DEL_YN = 'N'
+        <!--<include refid="search"/>-->
+    </select>
 </mapper>

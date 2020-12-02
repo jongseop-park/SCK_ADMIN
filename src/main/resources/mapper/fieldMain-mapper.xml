@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sck.admin.pkg.field.mapper.FieldMapper">
+<mapper namespace="com.sck.admin.pkg.fieldMain.mapper.FieldMainMapper">
 
-    <!--<resultMap id="FieldMap" type="Field">
+    <!--<resultMap id="FieldMap" type="FieldMain">
         <id property="seq" column="SEQ"/>
-        <result property="fieldName" column="FIELD_NAME"/>
+        <result property="fieldMainNm" column="FIELD_MAIN_NM"/>
         <result property="fieldAddress" column="FIELD_ADDRESS"/>
         <result property="fieldTel" column="FIELD_TEL"/>
         <result property="fieldRefund" column="FIELD_REFUND"/>
@@ -35,17 +35,17 @@
 
     <sql id="search">
         <if test="searchType != null">
-            <if test="searchType == 'tw'.toString()">AND (FIELD_NAME LIKE '%' || #{keyword} || '%' OR REG_ID LIKE '%' || #{keyword} || '%' OR MOD_ID LIKE '%' || #{keyword} || '%')</if>
-            <if test="searchType == 't'.toString()">AND FIELD_NAME LIKE '%' || #{keyword} || '%'</if>
+            <if test="searchType == 'tw'.toString()">AND (FIELD_MAIN_NM LIKE '%' || #{keyword} || '%' OR REG_ID LIKE '%' || #{keyword} || '%' OR MOD_ID LIKE '%' || #{keyword} || '%')</if>
+            <if test="searchType == 't'.toString()">AND FIELD_MAIN_NM LIKE '%' || #{keyword} || '%'</if>
             <if test="searchType == 'w'.toString()">AND (REG_ID LIKE '%' || #{keyword} || '%' OR MOD_ID LIKE '%' || #{keyword} || '%')</if>
         </if>
     </sql>
 
     <!-- 전체 조회 -->
-    <select id="page" resultType="Field" parameterType="Field">
+    <select id="page" resultType="FieldMain" parameterType="FieldMain">
         SELECT
             SEQ,
-            FIELD_NAME,
+            FIELD_MAIN_NM,
             FIELD_ADDRESS,
             FIELD_TEL,
             FIELD_REFUND,
@@ -56,7 +56,7 @@
         FROM (
             SELECT
                 SEQ,
-                FIELD_NAME,
+                FIELD_MAIN_NM,
                 FIELD_ADDRESS,
                 FIELD_TEL,
                 FIELD_REFUND,
@@ -65,19 +65,19 @@
                 MOD_ID,
                 MOD_DATE,
                 ROW_NUMBER() OVER(ORDER BY SEQ DESC) AS ROW_NUM
-            FROM WEB_FIELD
+            FROM WEB_FIELD_MAIN
             WHERE DEL_YN = 'N'
-            <include refid="search"></include>
-                ) FIELD
+            <include refid="search"/>
+                ) A
         WHERE ROW_NUM BETWEEN #{rowStart} AND #{rowEnd}
         <include refid="cmmnOrder"/>
     </select>
 
     <!-- 게시글 상세 -->
-    <select id="findByDetail" resultType="Field" parameterType="Field">
+    <select id="findByDetail" resultType="FieldMain" parameterType="FieldMain">
         SELECT
             A.SEQ,
-            A.FIELD_NAME,
+            A.FIELD_MAIN_NM,
             A.FIELD_ADDRESS,
             A.FIELD_REFUND,
             A.FIELD_TEL,
@@ -86,22 +86,22 @@
             A.REG_DATE,
             A.MOD_ID,
             A.MOD_DATE
-        FROM WEB_FIELD A
+        FROM WEB_FIELD_MAIN A
         WHERE A.SEQ = #{seq}
     </select>
 
     <!-- 게시글 추가 -->
-    <insert id="insert" parameterType="Field">
+    <insert id="insert" parameterType="FieldMain">
         <selectKey resultType="String" keyProperty="seq" order="BEFORE"> /* mybatis내에 특정값을 리턴 */
         SELECT WEB_FIELD_SEQ.NEXTVAL FROM DUAL
         </selectKey>
-        INSERT INTO WEB_FIELD
-        (SEQ, FIELD_NAME, FIELD_ADDRESS, FIELD_TEL, FIELD_REFUND, REG_ID, REG_DATE, DEL_YN)
+        INSERT INTO WEB_FIELD_MAIN
+        (SEQ, FIELD_MAIN_NM, FIELD_ADDRESS, FIELD_TEL, FIELD_REFUND, REG_ID, REG_DATE, DEL_YN)
         VALUES
-        (#{seq}, #{fieldName}, #{fieldAddress}, #{fieldTel}, #{fieldRefund}, #{regId}, SYSDATE, 'N' )
+        (#{seq}, #{fieldMainNm}, #{fieldAddress}, #{fieldTel}, #{fieldRefund}, #{regId}, SYSDATE, 'N' )
     </insert>
 
-   <!-- <insert id="insertDetail" parameterType="Field">
+   <!-- <insert id="insertDetail" parameterType="FieldMain">
         <foreach collection="fieldDetail" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL" index="index">
             INTO WEB_FIELD_DETAIL (SEQ, FIELD_SEQ, FIELD_SUB_NAME, FIELD_RENTAL, FIELD_SHOWER, FIELD_PARKING, FIELD_DRINK, FIELD_INFO, ORDER_NO, DEL_YN)
             VALUES
@@ -115,11 +115,11 @@
     END;
     -->
     <!-- 게시글 수정 -->
-    <update id="update" parameterType="Field">
-        UPDATE WEB_FIELD
+    <update id="update" parameterType="FieldMain">
+        UPDATE WEB_FIELD_MAIN
         SET
             SEQ = #{seq},
-            FIELD_NAME = #{fieldName},
+            FIELD_MAIN_NM = #{fieldMainNm},
             FIELD_ADDRESS = #{fieldAddress},
             FIELD_TEL = #{fieldTel},
             FIELD_REFUND = #{fieldRefund},
@@ -129,7 +129,7 @@
             SEQ = #{seq}
     </update>
 
-    <!--<update id="updateDetail" parameterType="Field">
+    <!--<update id="updateDetail" parameterType="FieldMain">
         MERGE INTO WEB_FIELD_DETAIL A /* 병합쿼리 새로운 데이터 A */
         USING (
         <foreach collection="fieldDetail" item="item" separator=" UNION ALL ">
@@ -165,28 +165,28 @@
         VALUES(WEB_FIELD_DETAIL_SEQ.NEXTVAL, #{seq}, B.FIELD_SUB_NAME, B.FIELD_RENTAL, B.FIELD_SHOWER, B.FIELD_PARKING, B.FIELD_DRINK, B.FIELD_INFO, B.ORDER_NO, B.DEL_YN)
     </update>-->
     <!-- 게시글 삭제 -->
-    <delete id="delete" parameterType="Field">
-        DELETE FROM WEB_FIELD
+    <delete id="delete" parameterType="FieldMain">
+        DELETE FROM WEB_FIELD_MAIN
         WHERE SEQ = #{seq}
     </delete>
     <!-- 게시글 삭제 여부(DEL_YN) -->
-    <update id="deleteUpdate" parameterType="Field">
-        UPDATE WEB_FIELD
+    <update id="deleteUpdate" parameterType="FieldMain">
+        UPDATE WEB_FIELD_MAIN
         SET
             DEL_YN = 'Y'
         WHERE
             SEQ = #{seq}
     </update>
 
-   <!-- <delete id="deleteDetail" parameterType="Field">
+   <!-- <delete id="deleteDetail" parameterType="FieldMain">
         DELETE WEB_FIELD_DETAIL
         WHERE FIELD_SEQ = #{seq}
     </delete>-->
     <!-- 게시글 총 개수 -->
     <select id="listTotalCount" resultType="int">
         SELECT COUNT(SEQ)
-        FROM WEB_FIELD
+        FROM WEB_FIELD_MAIN
         WHERE DEL_YN = 'N'
-        <include refid="search"></include>
+        <include refid="search"/>
     </select>
 </mapper>

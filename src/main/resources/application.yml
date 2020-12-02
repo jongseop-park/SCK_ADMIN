@@ -41,6 +41,8 @@ mybatis:
     lazy-loading-enabled: true
     aggressive-lazy-loading: false
     map-underscore-to-camel-case: true
+    jdbc-type-for-null: varchar
+
 
 ---
 # FileUpload

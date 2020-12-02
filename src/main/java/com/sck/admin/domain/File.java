@@ -7,9 +7,9 @@ public class File {
     /** 그룹번호 */
     private String groupSeq;
     /** 파일명 */
-    private String fileName;
+    private String fileNm;
     /** 실제파일 명 */
-    private String fileOrigName;
+    private String fileOrigNm;
     /** 파일 경로 */
     private String filePath;
     /** 파일 타입 */
@@ -43,20 +43,20 @@ public class File {
         this.groupSeq = groupSeq;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFileNm() {
+        return fileNm;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFileNm(String fileNm) {
+        this.fileNm = fileNm;
     }
 
-    public String getFileOrigName() {
-        return fileOrigName;
+    public String getFileOrigNm() {
+        return fileOrigNm;
     }
 
-    public void setFileOrigName(String fileOrigName) {
-        this.fileOrigName = fileOrigName;
+    public void setFileOrigNm(String fileOrigNm) {
+        this.fileOrigNm = fileOrigNm;
     }
 
     public String getFilePath() {

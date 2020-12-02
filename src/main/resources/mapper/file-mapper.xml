@@ -4,14 +4,125 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sck.admin.pkg.file.mapper.FileMapper">
 
-    <insert id="multiUpload" parameterType="File">
-        INSERT INTO WEB_FILE(SEQ, GROUP_SEQ, FILE_NAME, FILE_ORIG_NAME, FILE_PATH, FILE_TYPE, FILE_SIZE, REG_ID, REG_DATE, MOD_ID, MOD_DATE, ORDER_NO)
+    <resultMap id="fileMap" type="File">
+        <id property="seq" column="SEQ"/>
+        <result property="groupSeq" column="GROUP_SEQ"/>
+        <result property="fileName" column="FILE_NM"/>
+        <result property="fileOrigName" column="FILE_ORIG_NM"/>
+        <result property="filePath" column="FILE_PATH"/>
+        <result property="fileType" column="FILE_TYPE"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+        <result property="regId" column="REG_ID"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="modId" column="MOD_ID"/>
+        <result property="modDate" column="MOD_DATE"/>
+        <result property="orderNo" column="ORDER_NO"/>
+    </resultMap>
+
+    <select id="findByFile" parameterType="String" resultType="File">
+        SELECT
+            SEQ,
+            GROUP_SEQ,
+            FILE_NM,
+            FILE_ORIG_NM,
+            FILE_PATH,
+            FILE_TYPE,
+            FILE_SIZE,
+            REG_ID,
+            REG_DATE,
+            MOD_ID,
+            MOD_DATE,
+            ORDER_NO
+        FROM WEB_FILE
+        WHERE
+            GROUP_SEQ = #{seq}
+    </select>
+    <insert id="insert" parameterType="File">
+        INSERT INTO WEB_FILE
+        (
+            SEQ,
+            GROUP_SEQ,
+            FILE_NM,
+            FILE_ORIG_NM,
+            FILE_PATH,
+            FILE_TYPE,
+            FILE_SIZE,
+            REG_ID,
+            REG_DATE,
+            ORDER_NO
+        )
         VALUES
         (
-            WEB_FILE_SEQ.NEXTVAL, #{groupSeq}, #{fileName}, #{fileOrigName}, #{filePath}, #{fileType}, #{fileSize}, '사용자', SYSDATE, '사용자', SYSDATE, '')
+            WEB_FILE_SEQ.NEXTVAL,
+            #{groupSeq},
+            #{fileNm},
+            #{fileOrigNm},
+            #{filePath},
+            #{fileType},
+            #{fileSize},
+            #{regId},
+            SYSDATE,
+            #{orderNo}
         )
     </insert>
-    <update id="multiUpdate" parameterType="File">
 
+    <update id="update" parameterType="File">
+        UPDATE
+        SET
+            GROUP_SEQ = #{groupSeq},
+            FILE_NM = #{fileNm},
+            FILE_ORIG_NM = #{fileOrigNm},
+            FILE_PATH = #{filePath},
+            FILE_TYPE = #{fileType},
+            FILE_SIZE = #{fileSize},
+            MOD_ID = #{modId},
+            MOD_DATE = SYSDATE,
+            ORDER_NO = #{orderNo}
+        WHERE
+            SEQ = #{seq}
     </update>
+    <!--<update id="multiFileUpload" parameterType="File">
+        /*
+        foreach 지원태그
+        - collection : 전달받은 인자, List or Array 형태만 가능 (이 맵퍼에선 Map으로 넘겨준 키 값이 result)
+        - item : 전달받은 인자 값을 alias 명으로 대체
+        - open : 구문이 시작될 때 삽입할 문자열
+        - close : 구문이 종료될 때 삽입할 문자열
+        - separator : 반복되는 사이에 출력할 문자열
+        - index : 인덱스
+        */
+        MERGE INTO WEB_FILE A
+        USING (
+        <foreach collection="result" item="item" separator=" UNION ALL ">
+            SELECT
+                #{item.seq} SEQ,
+                #{item.groupSeq} GROUP_SEQ,
+                #{item.fileNm} FILE_NM,
+                #{item.fileOrigNm} FILE_ORIG_NM,
+                #{item.filePath} FILE_PATH,
+                #{item.fileType} FILE_TYPE,
+                #{item.fileSize} FILE_SIZE,
+                #{item.regId} REG_ID,
+                #{item.regData} REG_DATE,
+                #{item.modId} MOD_ID,
+                #{item.modDate} MOD_DATE,
+                #{item.orderNo} ORDER_NO
+            FROM DUAL
+        </foreach>
+        ) B
+        ON (A.SEQ = B.SEQ)
+        WHEN SET
+            A.GROUP_SEQ = B.GROUP_SEQ,
+            A.FILE_NM = B.FILE_NM,
+            A.FILE_ORIG_NM = B.FILE_ORIG_NM,
+            A.FILE_PATH = B.FILE_PATH,
+            A.FILE_TYPE = B.FILE_TYPE,
+            A.MOD_ID = B.MOD_ID,
+            A.MOD_DATE = SYSDATE,
+            A.ORDER_NO = B.ORDER_NO
+        WHEN NOT MATCHED THEN
+        INSERT(A.SEQ, A.GROUP_SEQ, A.FILE_NM, A.FILE_ORIG_NM, A.FILE_PATH, A.FILE_TYPE, A.REG_ID, A.REG_DATE, A.ORDER_NO)
+        VALUES(WEB_FILE_SEQ.NEXTVAL, #{groupSeq}, #{fileNm}, #{fileOrigNm}, #{filePath}, #{fileType}, #{regId}, SYSDATE, #{orderNo})
+
+    </update>-->
 </mapper>

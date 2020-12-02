@@ -1,10 +1,9 @@
-package com.sck.admin.pkg.field.controller;
+package com.sck.admin.pkg.fieldMain.controller;
 
 import com.sck.admin.core.domain.Paging;
 import com.sck.admin.core.domain.Search;
-import com.sck.admin.domain.Field;
-import com.sck.admin.domain.FieldSub;
-import com.sck.admin.pkg.field.service.FieldService;
+import com.sck.admin.domain.FieldMain;
+import com.sck.admin.pkg.fieldMain.service.FieldMainService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,41 +18,41 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping("/field")
-public class FieldController { // 구장 관리
+@RequestMapping("/fieldMain")
+public class FieldMainController { // 구장 관리
 
-    private static final Logger log = LoggerFactory.getLogger(FieldController.class);
+    private static final Logger log = LoggerFactory.getLogger(FieldMainController.class);
 
 
     @Autowired
-    public FieldService fieldService;
+    public FieldMainService fieldMainService;
 
     @RequestMapping("/list")
     public String list(@ModelAttribute("conn")Search condition, Model model) {
-        List<Field> result = fieldService.page(condition);
+        List<FieldMain> result = fieldMainService.page(condition);
         model.addAttribute("result", result);
 
         Paging paging = new Paging();
         paging.setCriteria(condition);
-        paging.setTotalCount(fieldService.listTotalCount(condition));
+        paging.setTotalCount(fieldMainService.listTotalCount(condition));
         model.addAttribute("paging", paging);
 
         log.info("==================================================================");
-        log.info("field/list");
+        log.info("fieldMain/list");
 
-        return "field/list";
+        return "fieldMain/list";
     }
 
     @RequestMapping("/form")
-    public String form(Field condition, Model model) throws Exception{
-        Field result = fieldService.findByDetail(condition);
+    public String form(FieldMain condition, Model model) throws Exception{
+
         if (StringUtils.isNotEmpty(condition.getSeq())) { // 데이터 존재
-            model.addAttribute("result", result);
+            model.addAttribute("result", fieldMainService.findByDetail(condition));
             model.addAttribute("isUpdate", true);
         } else { // 데이터 없음
             model.addAttribute("isUpdate", false);
         }
-        return "field/form";
+        return "fieldMain/form";
     }
 
     /**
@@ -67,21 +66,21 @@ public class FieldController { // 구장 관리
      */
     @RequestMapping("/save")
     @ResponseBody
-    public Field save(@RequestBody Field condition) { /* @PathVariable("id") String id  > Mapping {id} 중괄호에 명시된 값을 변수로 받음*/
+    public FieldMain save(@RequestBody FieldMain condition) { /* @PathVariable("id") String id  > Mapping {id} 중괄호에 명시된 값을 변수로 받음*/
 //        List<FieldSub> fieldDetail = condition.getFieldDetail();
 
         // 시퀀스 존재여부에 따라 insert, update 처리
         if (StringUtils.isEmpty(condition.getSeq())) {
-            fieldService.insert(condition);
+            fieldMainService.insert(condition);
 //            fieldService.insertDetail(condition);
             log.info("==================================================================");
-            log.info("field/save");
+            log.info("fieldMain/save");
             log.info("insert");
         } else {
-            fieldService.update(condition);
+            fieldMainService.update(condition);
 //            fieldService.updateDetail(condition);
             log.info("==================================================================");
-            log.info("field/save");
+            log.info("fieldMain/save");
             log.info("update");
         }
         return condition;
@@ -89,12 +88,12 @@ public class FieldController { // 구장 관리
 
     @RequestMapping("/delete")
     @ResponseBody
-    public Field delete(@RequestBody Field condition){
+    public FieldMain delete(@RequestBody FieldMain condition){
 
-        fieldService.deleteUpdate(condition); // 게시물 삭제
+        fieldMainService.deleteUpdate(condition); // 게시물 삭제
 //        fieldService.deleteDetail(condition); // 게시물 상세 삭제
         log.info("==================================================================");
-        log.info("field/delete");
+        log.info("fieldMain/delete");
 
         return condition;
     }

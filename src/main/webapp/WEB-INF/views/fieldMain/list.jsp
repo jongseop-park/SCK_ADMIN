@@ -38,12 +38,12 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="/field/list?page=1&perPageNum=10&searchType=전체보기&keyword=">구장리스트</a></li>
+                                <li class="breadcrumb-item"><a href="/fieldMain/list?page=1&perPageNum=10&searchType=전체보기&keyword=">메인구장 리스트</a></li>
                             </ol>
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
-                        <a href="/field/form" class="btn btn-lg btn-neutral">등록하기</a>
+                        <a href="/fieldMain/form" class="btn btn-lg btn-neutral">등록하기</a>
                     </div>
                 </div>
             </div>
@@ -57,12 +57,12 @@
                 <div class="card">
                     <!-- Card header -->
                     <div class="card-header bg-dark">
-                        <h2 class="mb-0" style="display: inline; color:white;">리스트</h2>
+                        <h2 class="mb-0" style="display: inline; color:white;">메인구장 리스트</h2>
                         <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" style="float: right" method="get">
-                            <select class="custom-select mr-sm-3" style="color: black;" id="searchSelect" name="searchType">
+                            <select class="custom-select mr-sm-3" style="color: black; width:15em;" id="searchSelect" name="searchType">
                                 <option value="n" <c:out value="${conn.searchType == null ? 'selected' : ''}"/>>전체보기</option>
-                                <option value="tw" <c:out value="${conn.searchType == 'tw' ? 'selected' : ''}"/>>구장명/관리자</option>
-                                <option value="t" <c:out value="${conn.searchType == 't' ? 'selected' : ''}"/>>구장명</option>
+                                <option value="tw" <c:out value="${conn.searchType == 'tw' ? 'selected' : ''}"/>>메인구장명/관리자</option>
+                                <option value="t" <c:out value="${conn.searchType == 't' ? 'selected' : ''}"/>>메인구장명</option>
                                 <option value="w" <c:out value="${conn.searchType == 'w' ? 'selected' : ''}"/>>관리자</option>
                             </select>
                             <div class="form-group mb-0">
@@ -97,12 +97,12 @@
                             </c:if>
                             <c:forEach var="list" items="${result}" varStatus="status">
                                 <input type="hidden" id="seq" value="${list.seq}"/>
-                                <tr onclick="location.href='/field/form?seq=${list.seq}'" style="cursor: pointer;">
+                                <tr onclick="location.href='/fieldMain/form?seq=${list.seq}'" style="cursor: pointer;">
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.seq}</span>
                                     </th>
                                     <th scope="row">
-                                        <span class="name mb-0 text-sm">${list.fieldName}</span>
+                                        <span class="name mb-0 text-sm">${list.fieldMainNm}</span>
                                     </th>
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.fieldTel}</span>
@@ -128,7 +128,7 @@
                                             </th>--%>
                                 </tr>
                             </c:forEach>
-                            <tr onclick="location.href='/field/form'" style="cursor: pointer;">
+                            <tr onclick="location.href='/fieldMain/form'" style="cursor: pointer;">
                                 <%--<tr>
                                 <th scope="row">
                                     <span class="name mb-4 text-sm">데이터가 존재하지 않습니다.</span>
@@ -145,7 +145,7 @@
                             <ul class="pagination justify-content-center mb-0">
                                 <c:if test="${paging.prev}">
                                     <li class="page-item">
-                                        <a class="page-link" href="/field/list${paging.makeSearch(paging.startPage - 1)}" tabindex="-1">
+                                        <a class="page-link" href="/fieldMain/list${paging.makeSearch(paging.startPage - 1)}" tabindex="-1">
                                             <i class="fas fa-angle-left"></i>
                                             <span class="sr-only">Previous</span>
                                         </a>
@@ -154,13 +154,13 @@
                                 <c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="idx">
                                     <c:if test="${idx ne 0}">
                                         <li class="page-item" id="page${idx}">
-                                            <a class="page-link" href="/field/list${paging.makeSearch(idx)}" >${idx}</a>
+                                            <a class="page-link" href="/fieldMain/list${paging.makeSearch(idx)}" >${idx}</a>
                                         </li>
                                     </c:if>
                                 </c:forEach>
                                 <c:if test="${paging.next && paging.endPage > 0}">
                                 <li class="page-item">
-                                    <a class="page-link" href="/field/list${paging.makeSearch(paging.endPage+1)}">
+                                    <a class="page-link" href="/fieldMain/list${paging.makeSearch(paging.endPage+1)}">
                                         <i class="fas fa-angle-right"></i>
                                         <span class="sr-only">Next</span>
                                     </a>
@@ -210,9 +210,9 @@
             if($(this).val() == 'n') {
                 $("#search").attr("placeholder", "전체보기");
             } else if($(this).val() == 'tw'){
-                $("#search").attr("placeholder", "제목/작성자 검색");
+                $("#search").attr("placeholder", "메인구장명/관리자 검색");
             } else if($(this).val() == 't'){
-                $("#search").attr("placeholder", "제목 검색");
+                $("#search").attr("placeholder", "메인구장명 검색");
             } else {
                 $("#search").attr("placeholder", "관리자 검색");
             }
@@ -226,7 +226,7 @@
 
         function location() {
 
-            var loc = "field/list"
+            var loc = "fieldMain/list"
                 + '${pageMaker.makeQuery(1)}'
                 + "&searchType="
                 + $("select option:selected").val()
