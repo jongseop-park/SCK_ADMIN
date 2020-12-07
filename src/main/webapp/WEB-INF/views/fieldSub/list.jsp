@@ -43,6 +43,8 @@
                         </nav>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
+<%--                        <a href="javascript:void(0)"class="btn btn-lg btn-neutral" id="excelDownload">엑셀다운로드</a>--%>
+                        <input type="button" class="btn btn-lg btn-neutral" id="excelDownload" value="엑셀다운로드"/>
                         <a href="/fieldSub/form" class="btn btn-lg btn-neutral">등록하기</a>
                     </div>
                 </div>
@@ -57,7 +59,7 @@
                 <div class="card">
                     <!-- Card header -->
                     <div class="card-header bg-dark">
-                        <h2 class="mb-0" style="display: inline; color:white;">서브구장 리스트</h2>
+                        <h2 class="mb-0" style="display: inline; color:white;" id="title">서브구장 리스트</h2>
                         <form class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" style="float: right" method="get">
                             <select class="custom-select mr-sm-3" style="color: black; width:15em;" id="searchSelect" name="searchType">
                                 <option value="n" <c:out value="${conn.searchType == null ? 'selected' : ''}"/>>전체보기</option>
@@ -81,7 +83,7 @@
                         <table class="table align-items-center table-flush list-table-hover">
                             <thead class="thead-light">
                             <tr>
-                                <th scope="col" class="sort" >No.</th>
+                                <th scope="col" class="sort" >No</th>
                                 <th scope="col" class="sort" >서브구장명</th>
                                 <th scope="col" class="sort" >구장명</th>
                                 <th scope="col" class="sort" >구장번호</th>
@@ -99,7 +101,7 @@
                             </c:if>
                             <c:forEach var="list" items="${result}" varStatus="status">
                                 <c:forEach var="mainList" items="${list.fieldMainList}">
-                                <input type="hidden" id="seq" value="${list.seq}"/>
+
                                 <tr onclick="location.href='/fieldSub/form?seq=${list.seq}'" style="cursor: pointer;">
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.seq}</span>
@@ -133,11 +135,6 @@
                                 </c:forEach>
                             </c:forEach>
                             <tr onclick="location.href='/fieldSub/form'" style="cursor: pointer;">
-                                <%--<tr>
-                                <th scope="row">
-                                    <span class="name mb-4 text-sm">데이터가 존재하지 않습니다.</span>
-                                </th>
-                            </tr>--%>
                             </tr>
                             </tbody>
                         </table>
@@ -192,6 +189,7 @@
 <script src="/static/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
 <!-- Argon JS -->
 <script src="/static/js/argon.js?v=1.2.0"></script>
+<script src="/static/js/common.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -207,6 +205,31 @@
     });
 
     $(function () {
+        /* 엑셀 다운로드 */
+        var title = $("#title").text();
+        var headerCell = [];
+        var bodyCell = [];
+        let cellLen;
+
+        $(".sort").each(function (index,item) {
+            headerCell.push($(this).text());
+        })
+        <c:forEach var="list" items="${result}" varStatus="status1">
+            <c:forEach var="item" items="${list.fieldMainList}" varStatus="status2">
+                    bodyCell.push("${list.seq}","${list.fieldSubNm}","${item.fieldMainNm}","${list.fieldSeq}","${list.regId}","${list.regDate}");
+                    <c:if test="${status1.first}">
+                    cellLen = bodyCell.length;
+                    </c:if>
+            </c:forEach>
+        </c:forEach>
+
+
+        $("#excelDownload").on("click",function(){
+            if(bodyCell != null) {
+                excelDownload(title,headerCell,bodyCell,cellLen);
+            }
+        });
+        /* /엑셀 다운로드/ */
 
         // 검색 select
         $("#searchSelect").on("change",function(){

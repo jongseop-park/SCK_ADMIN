@@ -80,7 +80,7 @@
                         <table class="table align-items-center table-flush list-table-hover">
                             <thead class="thead-light">
                             <tr>
-                                <th scope="col" class="sort" >No.</th>
+                                <th scope="col" class="sort" >No</th>
                                 <th scope="col" class="sort" >서브구장명</th>
                                 <th scope="col" class="sort" >구장명</th>
                                 <th scope="col" class="sort" >관리자</th>
@@ -96,7 +96,7 @@
                                 </tr>
                             </c:if>
                             <c:forEach var="list" items="${result}" varStatus="status">
-                                <input type="hidden" id="seq" value="${list.seq}"/>
+
                                 <tr onclick="location.href='/fieldSub/form?seq=${list.seq}'" style="cursor: pointer;">
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.seq}</span>

@@ -80,7 +80,7 @@
                         <table class="table align-items-center table-flush list-table-hover">
                             <thead class="thead-light">
                             <tr>
-                                <th scope="col" class="sort" >No.</th>
+                                <th scope="col" class="sort" >No</th>
                                 <th scope="col" class="sort" >아이디</th>
                                 <th scope="col" class="sort" >성명</th>
                                 <th scope="col" class="sort" >이메일</th>
@@ -97,7 +97,7 @@
                                 </tr>
                             </c:if>
                             <c:forEach var="list" items="${result}" varStatus="status">
-                                <input type="hidden" id="seq" value="${list.seq}"/>
+
                                 <tr onclick="location.href='/field/form?seq=${list.seq}'" style="cursor: pointer;">
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.seq}</span>

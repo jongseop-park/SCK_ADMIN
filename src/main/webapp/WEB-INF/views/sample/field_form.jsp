@@ -189,7 +189,7 @@
         var $btnSave = $('#btnSave'); // 저장
         var $btnUpdate = $('#btnUpdate'); // 수정
         var $btnDelete = $('#btnDelete'); // 삭제
-        var $btnCancle = $('#btnCancel'); // 취소
+        var $btnCancel = $('#btnCancel'); // 취소
 
         var $fieldBtnAdd = $('#fieldBtnAdd'); // 구장 추가
         var $fieldBtnDelete = $('#fieldBtnDelete'); // 구장 삭제
@@ -334,7 +334,7 @@
             Delete(object);
         });
         // 취소
-        $btnCancle.on("click",function(){
+        $btnCancel.on("click",function(){
             window.history.back();
         });
         // 이미지 삭제 컨펌

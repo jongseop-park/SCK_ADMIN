@@ -34,18 +34,18 @@
     <div class="header bg-primary pb-6">
         <div class="container-fluid">
             <div class="header-body">
-                <div class="row align-results-center py-4">
+                <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7">
                         <h6 class="h2 text-white d-inline-block mb-0">구장</h6>
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                                <li class="breadcrumb-result"><a href="/"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-result"><a href="/fieldSub/list?page=1&perPageNum=10&searchType=전체보기&keyword=">서브구장 리스트</a></li>
+                                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a href="/fieldSub/list?page=1&perPageNum=10&searchType=전체보기&keyword=">서브구장 리스트</a></li>
                                 <c:if test="${isUpdate eq true}">
-                                    <li class="breadcrumb-result">상세</li>
+                                    <li class="breadcrumb-item">상세</li>
                                 </c:if>
                                 <c:if test="${isUpdate eq false}">
-                                    <li class="breadcrumb-result">등록</li>
+                                    <li class="breadcrumb-item">등록</li>
                                 </c:if>
                             </ol>
                         </nav>
@@ -125,7 +125,7 @@
                                             <div class="form-group">
                                                 <label class="form-control-label">구장 이미지 (최대 10개)</label>
                                                 <div>
-                                                    <button type="button" class="field-detail-img"           name="fieldImg" value="false">이미지1</button>
+                                                    <button type="button" class="field-detail-img"           name="fieldImg" value="false"><img src="file:///C:\upload\image\2020\12\2\06ae4b697f45491b9d5abe35bc558eba_5_눈뽕.jpg" style="width:100%; height: 100%;"/></button>
                                                     <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지2</button>
                                                     <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지3</button>
                                                     <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지4</button>
@@ -137,9 +137,6 @@
                                                     <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지10</button>
                                                 </div>
                                                 <div class="div-field-img">
-                                                    <c:forEach var="file" items="${resultFile}" varStatus="status">
-
-                                                    </c:forEach>
                                                     <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="1">
                                                     <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="2">
                                                     <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="3">
@@ -192,12 +189,15 @@
 <!-- common JS -->
 <script src="/static/js/common.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        // alert("레디");
+    })
     $(function () {
         var $form = $('#form');
         var $btnSave = $('#btnSave'); // 저장
         var $btnUpdate = $('#btnUpdate'); // 수정
         var $btnDelete = $('#btnDelete'); // 삭제
-        var $btnCancle = $('#btnCancel'); // 취소
+        var $btnCancel = $('#btnCancel'); // 취소
 
         var $seq = $("#seq"); // 시퀀스
         var $fieldSeq = $("#fieldSeq"); // 메인구장번호
@@ -262,7 +262,7 @@
         });
 
         // 취소
-        $btnCancle.on("click",function(){
+        $btnCancel.on("click",function(){
             window.history.back();
         });
 

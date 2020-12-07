@@ -52,6 +52,7 @@ public class FileController {
             String fileOrigNm = files.get(count).getOriginalFilename(); // 실제파일명
             String fileNm = fileUtils.getRandomString(fileOrigNm); // 랜덤문자 + _실제파일명
             String uploadFile = path + "\\" + fileNm; // 저장할 파일경로 + 파일명
+
             if(!path.exists()){ // 파일 경로 확인 후 없을 시 폴더 생성
                 try{
                     path.mkdirs();

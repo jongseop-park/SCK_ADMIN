@@ -40,7 +40,7 @@
                         <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
                             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                                 <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i></a></li>
-                                <li class="breadcrumb-item"><a href="/fieldMain/list?page=1&perPageNum=10&searchType=전체보기&keyword=">서브구장 리스트</a></li>
+                                <li class="breadcrumb-item"><a href="/fieldMain/list?page=1&perPageNum=10&searchType=전체보기&keyword=">메인구장 리스트</a></li>
                                 <c:if test="${isUpdate eq true}">
                                     <li class="breadcrumb-item">상세</li>
                                 </c:if>
@@ -153,7 +153,7 @@
         var $btnSave = $('#btnSave'); // 저장
         var $btnUpdate = $('#btnUpdate'); // 수정
         var $btnDelete = $('#btnDelete'); // 삭제
-        var $btnCancle = $('#btnCancel'); // 취소
+        var $btnCancel = $('#btnCancel'); // 취소
 
         var $seq = $('#seq');
         var $fieldMainNm = $('#fieldMainNm'); // 구장
@@ -183,7 +183,7 @@
             Delete(object);
         });
         // 취소
-        $btnCancle.on("click",function(){
+        $btnCancel.on("click",function(){
             window.history.back();
         });
 

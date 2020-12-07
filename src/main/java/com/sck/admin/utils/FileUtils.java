@@ -13,9 +13,10 @@ public class FileUtils {
         /*SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
         now = sdf.format(cal.getTime());*/
         int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
+        int month = cal.get(Calendar.MONTH)+1;
         int day = cal.get(Calendar.DAY_OF_MONTH);
         now = File.separator + year + File.separator + month + File.separator + day + File.separator;  // separator(분리기호, '\','/')
+
         return now;
     }
 
