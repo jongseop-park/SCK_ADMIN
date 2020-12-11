@@ -68,7 +68,7 @@
             <div class="col">
                 <div class="card border-0">
                     <div id="map" class="map-canvas" style="height: 600px;">
-                        <img src="C:\upload\image\0e55df91fb96415bb41dda7c2351eb93_4_구뽕.jpg">
+                        <img src="upload/image/2020/12/7/1baa7be72aa448829cf60a5ecb562a6a_1_눈뽕.jpg">
                     </div>
                 </div>
             </div>

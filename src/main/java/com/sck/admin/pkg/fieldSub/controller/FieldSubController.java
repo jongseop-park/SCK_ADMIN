@@ -3,6 +3,7 @@ package com.sck.admin.pkg.fieldSub.controller;
 import com.sck.admin.core.domain.Paging;
 import com.sck.admin.core.domain.Search;
 import com.sck.admin.domain.FieldSub;
+import com.sck.admin.domain.File;
 import com.sck.admin.pkg.fieldSub.service.FieldSubService;
 import com.sck.admin.pkg.file.service.FileService;
 import lombok.extern.log4j.Log4j;
@@ -46,8 +47,17 @@ public class FieldSubController {
     public String form(FieldSub condition, Model model){
 
         if(StringUtils.isNotEmpty(condition.getSeq())){
+            List<File> resultFile = fileService.findByFile(condition.getSeq());
+            int count = 0;
+            for(File arr : resultFile){
+                resultFile.get(count++).setFilePath(
+                        arr.getFilePath()
+                                .replace("\\","/")
+                                .replace("C:","")
+                                .replace("D:",""));
+            }
             model.addAttribute("result",fieldSubService.findByDetail(condition));
-            model.addAttribute("resultFile",fileService.findByFile(condition.getSeq()));
+            model.addAttribute("resultFile",resultFile);
             model.addAttribute("isUpdate",true);
         } else {
             model.addAttribute("isUpdate",false);

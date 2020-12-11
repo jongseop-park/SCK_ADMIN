@@ -36,6 +36,7 @@
         FROM WEB_FILE
         WHERE
             GROUP_SEQ = #{seq}
+        ORDER BY ORDER_NO
     </select>
     <insert id="insert" parameterType="File">
         INSERT INTO WEB_FILE
@@ -67,7 +68,7 @@
     </insert>
 
     <update id="update" parameterType="File">
-        UPDATE
+        UPDATE WEB_FILE
         SET
             GROUP_SEQ = #{groupSeq},
             FILE_NM = #{fileNm},
@@ -81,6 +82,13 @@
         WHERE
             SEQ = #{seq}
     </update>
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM WEB_FILE
+        WHERE SEQ = #{seq}
+
+    </delete>
+
     <!--<update id="multiFileUpload" parameterType="File">
         /*
         foreach 지원태그

@@ -27,4 +27,9 @@ public class FileService {
     public List<File> findByFile(String seq){
         return fileMapper.findByFile(seq);
     }
+
+    /* 파일 삭제 */
+    public void delete(String deleteSeq){
+        fileMapper.delete(deleteSeq);
+    }
 }

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -124,29 +125,18 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="form-control-label">구장 이미지 (최대 10개)</label>
-                                                <div>
-                                                    <button type="button" class="field-detail-img"           name="fieldImg" value="false"><img src="file:///C:\upload\image\2020\12\2\06ae4b697f45491b9d5abe35bc558eba_5_눈뽕.jpg" style="width:100%; height: 100%;"/></button>
-                                                    <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지2</button>
-                                                    <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지3</button>
-                                                    <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지4</button>
-                                                    <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지5</button>
-                                                    <button type="button" class="field-detail-img"           name="fieldImg" value="false">이미지6</button>
-                                                    <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지7</button>
-                                                    <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지8</button>
-                                                    <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지9</button>
-                                                    <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지10</button>
-                                                </div>
+                                                <div id="imageBtn"></div>
                                                 <div class="div-field-img">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="1">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="2">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="3">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="4">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="5">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="6">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="7">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="8">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="9">
-                                                    <input type="file" name="fieldImgFile" accept="image/*" data-seq="" data-order="10">
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
+                                                    <input type="file" name="fieldImgFile" accept="image/*" >
                                                 </div>
                                             </div>
                                         </div>
@@ -190,7 +180,50 @@
 <script src="/static/js/common.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        // alert("레디");
+        var $imageBtn = $("#imageBtn");
+        var obj = [];
+        <c:forEach var="img" items="${resultFile}" varStatus="status">
+                var result = {
+                    seq : "${img.seq}",
+                    groupSeq : "${img.groupSeq}",
+                    fileNm : "${img.fileNm}",
+                    fileOrigNm : "${img.fileOrigNm}",
+                    filePath : "${img.filePath}",
+                    fileType : "${img.fileType}",
+                    fileSize : "${img.fileSize}",
+                    orderNo : "${img.orderNo}",
+                    regId : "${img.regId}",
+                    regDate : "${img.regDate}",
+                    modId : "${img.modId}",
+                    modDate : "${img.modDate}"
+                }
+                obj.push(result);
+        </c:forEach>
+
+        for(var i=1,j=0; i<=10; i++){
+            if(obj[j] != undefined && i == obj[j].orderNo){
+                var location = obj[j].filePath+obj[j].fileNm;
+                if(i === 1 || i === 6){
+                    $imageBtn.append('<button type="button" class="field-detail-img" name="fieldImg" value="true" data-seq="'+obj[j].seq+'" data-order="'+i+'">' +
+                        '<img style="width: 100%; height: 100%;" src="'+location+'">' +
+                        '</button>');
+                } else {
+                    $imageBtn.append('<button type="button" class="field-detail-img rear-img" name="fieldImg" value="true" data-seq="'+obj[j].seq+'" data-order="'+i+'">' +
+                        '<img style="width: 100%; height: 100%;" src="'+location+'">' +
+                        '</button>');
+                }
+                j++;
+            }
+            else {
+                if(i === 1 || i === 6){
+                    $imageBtn.append('<button type="button" class="field-detail-img" name="fieldImg" value="false" data-seq="" data-order="'+i+'">이미지'+i+'</button>')
+                } else {
+                    $imageBtn.append('<button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false" data-seq="" data-order="'+i+'">이미지'+i+'</button>')
+                }
+            }
+        }
+        // <button type="button" class="field-detail-img"           name="fieldImg" value="false">이미지1</button>
+        // <button type="button" class="field-detail-img rear-img"  name="fieldImg" value="false">이미지2</button>
     })
     $(function () {
         var $form = $('#form');
@@ -209,6 +242,7 @@
         var $fieldParking = $("#fieldParking"); // 주차시설 체크박스
         var $fieldDrink = $("#fieldDrink"); // 음료판매 체크박스
         var $fieldImgFile = $("[name=fieldImgFile]"); // 구장 이미지
+        var $fieldImg = $("[name=fieldImg]");
         var formData;
 
         // 이미지 클릭 이벤트
@@ -295,22 +329,22 @@
              }
 
              formData = new FormData();
-             $.each($fieldImgFile,function (index,object) { // 이미지 파일 업로드
-                 var imgFile = $fieldImgFile[index].files[0];
-                 if(imgFile != null){
-                formData.append("file",imgFile);
-                formData.append("seq",$fieldImgFile.eq(index).attr("data-seq"));
-                formData.append("orderNo",$fieldImgFile.eq(index).attr("data-order"));
-                 }
-                 if($fieldImgFile.length == index+1){
+            $.each($fieldImg,function (index,object) { // 이미지 파일 업로드
+                var imgFile = $fieldImgFile[index].files[0];
+
+                if($(this).val() == 'true' && imgFile != null){ // 이미지 추가 및 수정 시
+                    formData.append("file",imgFile);
+                    formData.append("seq",$(this).attr("data-seq"));
+                    formData.append("orderNo",$(this).attr("data-order"));
+                } else if ($(this).val() == 'false'){
+                    formData.append("deleteFileSeq",$(this).attr("data-seq"));
+                }
+
+                if($fieldImgFile.length == index+1){ // 반복문 마지막에 저장
                     formData.append("groupSeq",$seq.val());
                     formData.append("adminId",'<%=username%>');
-                 }
-             });
-
-             for(var value of formData.entries()){ // 이미지 파일 정보
-                 console.log(value);
-             }
+                }
+            });
 
             return data
         }
@@ -374,68 +408,3 @@
         }
     })
 </script>
-<%--
-
-        function fieldData(){
-            var fieldMainList = []; // DB에 저장될 값
-            $("div[name=fieldDetail]").each(function (index,result) { // index  result
-                var obj = {
-                    "seq" : $(result).find("[name=detailSeq]").val(),
-                    "fieldSeq" : $seq.val(),
-                    "fieldSubName" : $(result).find("[name=fieldSubName]").val(),
-                    "fieldRental" : $(result).find("[name=fieldRental]").val(),
-                    "fieldShower" : $(result).find("[name=fieldShower]").is(":checked") == true ? 1 : 0,
-                    "fieldParking" : $(result).find("[name=fieldParking]").is(":checked") == true ? 1 : 0,
-                    "fieldDrink" : $(result).find("[name=fieldDrink]").is(":checked") == true ? 1 : 0,
-                    "fieldInfo" : $(result).find("[name=fieldInfo]").val(),
-                    "orderNo" : index,
-                    "delYn" : 'N'
-                }
-                fieldMainList.push(obj);
-
-
-            });
-            if(detailDelObj != null) {
-                fieldMainList.push(detailDelObj);
-            }
-            var data = {
-                "fieldName" : $fieldName.val(),
-                "fieldAddress" : $fieldAddress.val(),
-                "fieldTel" : $fieldTel.val(),
-                "fieldRefund" : $fieldRefund.val(),
-                "fieldDetail" : fieldMainList
-            };
-            if($seq.val() != ''){
-                data["seq"] = $seq.val();
-            }
-            if(isUpdate == 'false'){
-                data["regId"] = "<%=username%>";
-            } else if(isUpdate == 'true'){
-                data["modId"] = "<%=username%>";
-            }
-
-            var formData = new FormData();
-            for(var i = 0; i<$("[name=fieldImgFile]").length; i++){
-                var file = $("[name=fieldImgFile]").eq(i)[0].files[0];
-                if(file != null){
-                    formData.append("seq",$("[name=fieldImgFile]").eq(i).attr("data-seq"));
-                    formData.append("orderNo",$("[name=fieldImgFile]").eq(i).attr("data-order"));
-                    formData.append("file",file);
-                }
-            }
-
-            var fileExist = false;
-            for(var value of formData.entries()){
-                console.log(value);
-                fileExist = true;
-            }
-            if(fileExist == true){
-                formData.append("adminId","<%=username%>");
-                formData.append("groupSeq",$seq.val());
-                upload(formData);
-            }
-            return data;
-        }
-
-
-</script>--%>
