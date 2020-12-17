@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sck.admin.pkg.authorityGrp.mapper.AuthorityGrpMapper">
+<mapper namespace="com.sck.pkg.authorityGrp.mapper.AuthorityGrpMapper">
     <sql id="cmmnOrder">
         ORDER BY SEQ DESC
     </sql>

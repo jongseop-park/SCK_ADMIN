@@ -35,7 +35,7 @@ spring:
 ---
 # mybatis ¼¼ÆÃ
 mybatis:
-  type-aliases-package: com.sck.admin.domain
+  type-aliases-package: com.sck.domain
   mapper-locations: classpath:mapper/**/*mapper.xml
   configuration:
     lazy-loading-enabled: true

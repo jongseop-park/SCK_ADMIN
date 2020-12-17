@@ -23,15 +23,21 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/master/member/list?page=1&perPageNum=10&searchType=n&keyword=">
-                            <i class="ni ni-bullet-list-67 text-default"></i>
-                            <span class="nav-link-text">계정관리</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="/authorityGrp/list?page=1&perPageNum=10&searchType=n&keyword=">
                             <i class="ni ni-bullet-list-67 text-default"></i>
                             <span class="nav-link-text">권한관리</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/admin/list?page=1&perPageNum=10&searchType=n&keyword=">
+                            <i class="ni ni-bullet-list-67 text-default"></i>
+                            <span class="nav-link-text">관리자 계정관리</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/member/list?page=1&perPageNum=10&searchType=n&keyword=">
+                            <i class="ni ni-bullet-list-67 text-default"></i>
+                            <span class="nav-link-text">회원 계정관리</span>
                         </a>
                     </li>
                 </ul>

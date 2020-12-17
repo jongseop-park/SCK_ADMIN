@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sck.admin.pkg.fieldSub.mapper.FieldSubMapper">
+<mapper namespace="com.sck.pkg.fieldSub.mapper.FieldSubMapper">
 
     <resultMap id="fieldSubMap" type="FieldSub">
         <id property="seq" column="SEQ"/>
@@ -35,7 +35,7 @@
     <sql id="search" >
         <if test="searchType != null">
             <if test="searchType == 'sn'.toString()">AND FIELD_SUB_NM LIKE '%' || #{keyword} || '%'</if>
-            <if test="searchType == 'fn'.toString()">AND FIELD_MAIN_NM LIKE '%' || #{keyword} || '%'</if>
+            <if test="searchType == 'fn'.toString()">AND B.FIELD_MAIN_NM LIKE '%' || #{keyword} || '%'</if>
             <if test="searchType == 'fno'.toString()">AND FIELD_SEQ LIKE '%' || #{keyword} || '%'</if>
             <if test="searchType == 'w'.toString()">AND (REG_ID LIKE '%' || #{keyword} || '%' OR MOD_ID LIKE '%' || #{keyword} || '%')</if>
         </if>

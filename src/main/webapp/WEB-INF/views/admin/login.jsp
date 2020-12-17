@@ -57,7 +57,6 @@
                                         <p class="error" >아이디, 혹은 비밀번호가 올바르지 않습니다.</p>
                                         <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
                                     </c:if>
-                                </p>
                             </div>
                             <div class="custom-control custom-control-alternative custom-checkbox">
                                 <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
@@ -121,6 +120,6 @@
 </html>
 <script type="text/javascript">
     $(function () {
-        $("#loginBtn").trigger("click");
+        // $("#loginBtn").trigger("click");
     })
 </script>

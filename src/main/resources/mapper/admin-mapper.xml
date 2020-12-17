@@ -2,14 +2,16 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sck.admin.pkg.admin.mapper.AdminMapper">
+<mapper namespace="com.sck.pkg.admin.mapper.AdminMapper">
     <resultMap id="AdminMap" type="Admin">
         <id property="seq" column="SEQ"/>
         <result property="adminId" column="ADMIN_ID"/>
         <result property="adminPw" column="ADMIN_PW"/>
-        <result property="adminName" column="ADMIN_NAME"/>
+        <result property="adminNm" column="ADMIN_NM"/>
         <result property="adminEmail" column="ADMIN_EMAIL"/>
         <result property="adminTel" column="ADMIN_TEL"/>
+        <result property="pwFailCnt" column="PW_FAIL_CNT"/>
+        <result property="lockYn" column="LOCK_YN"/>
         <result property="regDate" column="REG_DATE"/>
         <result property="delYn" column="DEL_YN"/>
         <collection property="auth" ofType="Authority">
@@ -30,6 +32,8 @@
         SELECT
         A.ADMIN_ID,
         A.ADMIN_PW,
+        A.PW_FAIL_CNT,
+        A.LOCK_YN,
         C.AUTH_CODE
         FROM WEB_ADMIN A JOIN WEB_AUTH B
         ON A.SEQ = B.ADMIN_SEQ
@@ -40,8 +44,8 @@
 
     </select>
     <insert id="adminInsert" parameterType="Admin">
-        INSERT INTO WEB_ADMIN(SEQ, ADMIN_ID, ADMIN_PW, ADMIN_NAME, ADMIN_EMAIL, ADMIN_TEL, REG_DATE, DEL_YN)
-        VALUES (WEB_ADMIN_SEQ.NEXTVAL, #{adminId}, #{adminPw}, #{adminName}, #{adminEmail}, #{adminTel}, SYSDATE, 'N')
+        INSERT INTO WEB_ADMIN(SEQ, ADMIN_ID, ADMIN_PW, ADMIN_NM, ADMIN_EMAIL, ADMIN_TEL, PW_FAIL_CNT, LOCK_YN, REG_DATE, DEL_YN)
+        VALUES (WEB_ADMIN_SEQ.NEXTVAL, #{adminId}, #{adminPw}, #{adminNm}, #{adminEmail}, #{adminTel}, 0, 'N', SYSDATE, 'N')
     </insert>
 
 

@@ -55,7 +55,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                     </div>
-                                    <input class="form-control" placeholder="성함" type="text" id="name" name="adminName">
+                                    <input class="form-control" placeholder="성함" type="text" id="name" name="adminNm">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -178,7 +178,7 @@
             var data = {
                 "adminId" : $id.val(),
                 "adminPw" : $pw.val(),
-                "adminName" : $name.val(),
+                "adminNm" : $name.val(),
                 "adminEmail" : $email.val(),
                 "adminTel" : $tel.val()
             }
