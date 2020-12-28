@@ -11,7 +11,7 @@ import java.util.List;
 //@SuppressWarnings()
 public class AdminPrincipal implements UserDetails {
 
-    private ArrayList<Admin> admin;
+    private final ArrayList<Admin> admin;
 
     public AdminPrincipal(ArrayList<Admin> adminAuthes){
         this.admin = adminAuthes;
@@ -22,8 +22,8 @@ public class AdminPrincipal implements UserDetails {
 
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-        for(int x=0; x<admin.size(); x++){
-            authorities.add(new SimpleGrantedAuthority(admin.get(x).getAuthGrp().getAuthCode()));
+        for (Admin value : admin) {
+            authorities.add(new SimpleGrantedAuthority(value.getAuthGrp().getAuthCode()));
         }
 
         return authorities;

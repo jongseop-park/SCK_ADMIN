@@ -4,6 +4,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sck.pkg.account.mapper.AdminAccMapper">
 
+    <resultMap id="AdminMap" type="Admin">
+        <id property="seq" column="SEQ"/>
+        <result property="adminId" column="ADMIN_ID"/>
+        <result property="adminPw" column="ADMIN_PW"/>
+        <result property="adminNm" column="ADMIN_NM"/>
+        <result property="adminEmail" column="ADMIN_EMAIL"/>
+        <result property="adminTel" column="ADMIN_TEL"/>
+        <result property="pwFailCnt" column="PW_FAIL_CNT"/>
+        <result property="lockYn" column="LOCK_YN"/>
+        <result property="regDate" column="REG_DATE"/>
+        <result property="delYn" column="DEL_YN"/>
+        <collection property="auth" ofType="Authority">
+            <result property="adminSeq" column="ADMIN_SEQ"/>
+            <result property="authSeq" column="AUTH_SEQ"/>
+        </collection>
+        <collection property="authGrp" ofType="AuthorityGrp">
+            <id property="seq" column="SEQ"/>
+            <result property="authCode" column="AUTH_CODE"/>
+            <result property="authName" column="AUTH_NAME"/>
+            <result property="regDate" column="REG_DATE"/>
+            <result property="modDate" column="MOD_DATE"/>
+            <result property="delYn" column="DEL_YN"/>
+        </collection>
+    </resultMap>
+
     <sql id="cmmnOrder">
         ORDER BY SEQ DESC
     </sql>
@@ -17,15 +42,16 @@
     </sql>
 
     <!-- 전체 조회 -->
-    <select id="page" resultType="Admin" parameterType="Admin">
+    <select id="page" resultMap="AdminMap" parameterType="Admin">
         SELECT
-        SEQ,
-        ADMIN_ID,
-        ADMIN_NM,
-        ADMIN_EMAIL,
-        ADMIN_TEL,
-        TO_CHAR(REG_DATE,'YYYY-MM-DD HH24:MI') REG_DATE,
-        DEL_YN
+        A.SEQ,
+        A.ADMIN_ID,
+        A.ADMIN_NM,
+        A.ADMIN_EMAIL,
+        A.ADMIN_TEL,
+        TO_CHAR(A.REG_DATE,'YYYY-MM-DD HH24:MI') REG_DATE,
+        A.DEL_YN,
+        C.AUTH_NAME
         FROM (
         SELECT
         SEQ,
@@ -39,122 +65,51 @@
         FROM WEB_ADMIN
         WHERE DEL_YN = 'N'
         <include refid="search"></include>
-        ) ADMIN
+        ) A JOIN WEB_AUTH B
+        ON A.SEQ = B.ADMIN_SEQ
+        JOIN WEB_AUTH_GRP C
+        ON B.AUTH_SEQ = C.SEQ
         WHERE ROW_NUM BETWEEN #{rowStart} AND #{rowEnd}
         <include refid="cmmnOrder"/>
     </select>
 
     <!-- 게시글 상세 -->
-    <select id="findByDetail" resultType="Admin" parameterType="Admin">
+    <select id="findByDetail" resultMap="AdminMap" parameterType="Admin">
         SELECT
-            SEQ,
-            ADMIN_ID,
-            ADMIN_NM,
-            ADMIN_EMAIL,
-            ADMIN_TEL,
-            REG_DATE,
-            DEL_YN
-        FROM WEB_ADMIN
-        WHERE SEQ = #{seq}
+            A.SEQ,
+            A.ADMIN_ID,
+            A.ADMIN_NM,
+            A.ADMIN_EMAIL,
+            A.ADMIN_TEL,
+            A.REG_DATE,
+            A.DEL_YN,
+            A.PW_FAIL_CNT,
+            A.LOCK_YN,
+            C.AUTH_NAME
+        FROM WEB_ADMIN A JOIN WEB_AUTH B
+        ON A.SEQ = B.ADMIN_SEQ
+        JOIN WEB_AUTH_GRP C
+        ON B.AUTH_SEQ = C.SEQ
+        WHERE A.SEQ = #{seq}
     </select>
 
-    <!--    &lt;!&ndash; 게시글 추가 &ndash;&gt;-->
-    <!--    <insert id="insert" parameterType="Field">-->
-    <!--        <selectKey resultType="String" keyProperty="seq" order="BEFORE"> /* mybatis내에 특정값을 리턴 */-->
-    <!--            SELECT WEB_FIELD_SEQ.NEXTVAL FROM DUAL-->
-    <!--        </selectKey>-->
-    <!--        INSERT INTO WEB_FIELD-->
-    <!--        (SEQ, FIELD_NAME, FIELD_ADDRESS, FIELD_TEL, FIELD_REFUND, REG_ID, REG_DATE, DEL_YN)-->
-    <!--        VALUES-->
-    <!--        (#{seq}, #{fieldName}, #{fieldAddress}, #{fieldTel}, #{fieldRefund}, #{regId}, SYSDATE, 'N' )-->
-    <!--    </insert>-->
+    <update id="failCntReset" parameterType="String">
+        UPDATE WEB_ADMIN
+        SET PW_FAIL_CNT = 0
+        WHERE ADMIN_ID = #{id}
+    </update>
 
-    <!--    <insert id="insertDetail" parameterType="Field">-->
-    <!--        <foreach collection="fieldDetail" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL" index="index">-->
-    <!--            INTO WEB_FIELD_DETAIL (SEQ, FIELD_SEQ, FIELD_SUB_NAME, FIELD_RENTAL, FIELD_SHOWER, FIELD_PARKING, FIELD_DRINK, FIELD_INFO, ORDER_NO, DEL_YN)-->
-    <!--            VALUES-->
-    <!--            (GET_WEB_FIELD_DETAIL_SEQ, #{seq}, #{item.fieldSubName}, #{item.fieldRental}, #{item.fieldShower}, #{item.fieldParking}, #{item.fieldDrink}, #{item.fieldInfo}, #{item.orderNo}, #{item.delYn})-->
-    <!--        </foreach>-->
-    <!--    </insert>-->
-    <!--    &lt;!&ndash; INSERT ALL에는 시퀀스가 자동으로 증가되지 않기 때문에 함수를 만들어서 사용.-->
-    <!--    create or replace FUNCTION GET_WEB_EVENTS_HALL_SEQ RETURN NUMBER IS-->
-    <!--    BEGIN-->
-    <!--    RETURN WEB_FIELD_DETAIL_SEQ.NEXTVAL;-->
-    <!--    END;-->
-    <!--    &ndash;&gt;-->
-    <!--    &lt;!&ndash; 게시글 수정 &ndash;&gt;-->
-    <!--    <update id="update" parameterType="Field">-->
-    <!--        UPDATE WEB_FIELD-->
-    <!--        SET-->
-    <!--            SEQ = #{seq},-->
-    <!--            FIELD_NAME = #{fieldName},-->
-    <!--            FIELD_ADDRESS = #{fieldAddress},-->
-    <!--            FIELD_TEL = #{fieldTel},-->
-    <!--            FIELD_REFUND = #{fieldRefund},-->
-    <!--            MOD_ID = #{modId},-->
-    <!--            MOD_DATE = SYSDATE-->
-    <!--        WHERE-->
-    <!--            SEQ = #{seq}-->
-    <!--    </update>-->
+    <update id="accountIsLock" parameterType="String">
+        UPDATE WEB_ADMIN
+        SET LOCK_YN = CASE LOCK_YN WHEN 'Y' THEN 'N' ELSE 'Y' END
+        WHERE ADMIN_ID = #{id}
+    </update>
 
-    <!--    <update id="updateDetail" parameterType="Field">-->
-    <!--        MERGE INTO WEB_FIELD_DETAIL A /* 병합쿼리 새로운 데이터 A */-->
-    <!--        USING (-->
-    <!--        <foreach collection="fieldDetail" item="item" separator=" UNION ALL ">-->
-    <!--            SELECT-->
-    <!--            #{item.seq,jdbcType=VARCHAR} SEQ-->
-    <!--            , #{item.fieldSeq} FIELD_SEQ-->
-    <!--            , #{item.fieldSubName} FIELD_SUB_NAME-->
-    <!--            , #{item.fieldRental} FIELD_RENTAL-->
-    <!--            , #{item.fieldShower} FIELD_SHOWER-->
-    <!--            , #{item.fieldParking} FIELD_PARKING-->
-    <!--            , #{item.fieldDrink} FIELD_DRINK-->
-    <!--            , #{item.fieldInfo} FIELD_INFO-->
-    <!--            , #{item.orderNo} ORDER_NO-->
-    <!--            , #{item.delYn} DEL_YN-->
-    <!--            FROM DUAL-->
-    <!--        </foreach>-->
-    <!--        ) B /* 기존데이터 B */-->
-    <!--        ON ( A.SEQ = B.SEQ ) /* 조건 */-->
-    <!--        WHEN MATCHED THEN /* 조건이 맞으면 아래쿼리 실행*/-->
-    <!--        UPDATE SET-->
-    <!--        A.FIELD_SEQ = B.FIELD_SEQ-->
-    <!--        , A.FIELD_SUB_NAME = B.FIELD_SUB_NAME-->
-    <!--        , A.FIELD_RENTAL = B.FIELD_RENTAL-->
-    <!--        , A.FIELD_SHOWER = B.FIELD_SHOWER-->
-    <!--        , A.FIELD_PARKING = B.FIELD_PARKING-->
-    <!--        , A.FIELD_DRINK = B.FIELD_DRINK-->
-    <!--        , A.FIELD_INFO = B.FIELD_INFO-->
-    <!--        , A.ORDER_NO = B.ORDER_NO-->
-    <!--        , A.DEL_YN = B.DEL_YN-->
-    <!--        DELETE WHERE B.DEL_YN = 'Y'-->
-    <!--        WHEN NOT MATCHED THEN /* 조건이 다르면 INSERT */-->
-    <!--        INSERT(A.SEQ, A.FIELD_SEQ, A.FIELD_SUB_NAME, A.FIELD_RENTAL, A.FIELD_SHOWER, A.FIELD_PARKING, A.FIELD_DRINK, A.FIELD_INFO, A.ORDER_NO, A.DEL_YN)-->
-    <!--        VALUES(WEB_FIELD_DETAIL_SEQ.NEXTVAL, #{seq}, B.FIELD_SUB_NAME, B.FIELD_RENTAL, B.FIELD_SHOWER, B.FIELD_PARKING, B.FIELD_DRINK, B.FIELD_INFO, B.ORDER_NO, B.DEL_YN)-->
-    <!--    </update>-->
-    <!--    &lt;!&ndash; 게시글 삭제 &ndash;&gt;-->
-    <!--    <delete id="delete" parameterType="Field">-->
-    <!--        DELETE FROM WEB_FIELD-->
-    <!--        WHERE SEQ = #{seq}-->
-    <!--    </delete>-->
-    <!--    &lt;!&ndash; 게시글 삭제 여부(DEL_YN) &ndash;&gt;-->
-    <!--    <update id="deleteUpdate" parameterType="Field">-->
-    <!--        UPDATE WEB_FIELD-->
-    <!--        SET-->
-    <!--            DEL_YN = 'Y'-->
-    <!--        WHERE-->
-    <!--            SEQ = #{seq}-->
-    <!--    </update>-->
-
-    <!--    <delete id="deleteDetail" parameterType="Field">-->
-    <!--        DELETE WEB_FIELD_DETAIL-->
-    <!--        WHERE FIELD_SEQ = #{seq}-->
-    <!--    </delete>-->
-    <!-- 게시글 총 개수 -->
     <select id="listTotalCount" resultType="int">
         SELECT COUNT(SEQ)
         FROM WEB_ADMIN
         WHERE DEL_YN = 'N'
         <include refid="search"></include>
     </select>
+
 </mapper>

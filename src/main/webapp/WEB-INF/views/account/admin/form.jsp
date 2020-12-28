@@ -115,8 +115,16 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="form-group">
+                                                    <label class="form-control-label" for="role">권한</label>
+                                                    <input type="text" disabled id="role" class="form-control" placeholder="권한" value="${result.authGrp.authName}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
                                                     <label class="form-control-label">비밀번호 실패횟수 초기화</label>
-                                                    <input type="button" class="form-control btn btn-primary" value="FAIL COUNT RESET"/>
+                                                    <input type="button" class="form-control btn btn-primary" id="failCntReset" value="FAIL COUNT RESET"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,7 +132,7 @@
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label class="form-control-label">비밀번호 초기화</label>
-                                                    <input type="button" class="form-control btn btn-primary" value="PASSWORD RESET"/>
+                                                    <input type="button" class="form-control btn btn-primary" id="passwordReset" value="PASSWORD RESET"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,7 +140,13 @@
                                             <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <label class="form-control-label">계정 잠금</label>
-                                                    <input type="button" class="form-control btn btn-primary" value="ACCOUNT LOCK"/>
+                                                    <c:if test="${result.lockYn eq 'Y'}">
+                                                        <input type="button" class="form-control btn btn-danger" id="lockYn" value="ACCOUNT LOCK" data-value="${result.lockYn}"/>
+                                                    </c:if>
+                                                    <c:if test="${result.lockYn eq 'N'}">
+                                                        <input type="button" class="form-control btn btn-primary" id="lockYn" value="ACCOUNT UNLOCK" data-value="${result.lockYn}"/>
+                                                    </c:if>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -167,101 +181,78 @@
 <script src="/static/js/common.js"></script>
 <script type="text/javascript">
     $(function () {
-        var $form = $('#form');
-        var $btnSave = $('#btnSave'); // 저장
-        var $btnUpdate = $('#btnUpdate'); // 수정
-        var $btnDelete = $('#btnDelete'); // 삭제
-        var $btnCancel = $('#btnCancel'); // 취소
+        var $failCntReset = $("#failCntReset"); // 비밀번호 실패횟수 초기화 버튼
+        var $passwordReset = $("#passwordReset"); // 비밀번호 초기화 버튼
+        var $lockYn = $("#lockYn"); // 계정 잠금 버튼
+        var $isLock = $("#lockYn").data("value");
+        // var $isLock2 = $("#lockYn").attr("data-value");
 
-        var $seq = $('#seq');
-        var $fieldMainNm = $('#fieldMainNm'); // 구장
-        var $fieldAddress = $('#fieldAddress'); // 주소
-        var $fieldTel = $('#fieldTel'); // 연락처
-        var $fieldRefund = $('#fieldRefund'); // 환불규정
-        var isUpdate = "${isUpdate}";
-
-        // 저장
-        $btnSave.on("click",function(){
-            if(fieldCnt > 0){
-            Save(fieldData());
-            } else {
-                alert("구장의 개수는 최소 1개 이상이어야 합니다.");
+        $failCntReset.on("click",function(){ // 비밀번호 실패횟수 초기화
+            var btnType = "failCntReset";
+            if(confirmMsg(btnType) === true) {
+                update(btnType);
             }
-
-        });
-        // 수정
-        $btnUpdate.on("click",function(){
-            Save(fieldData());
-        });
-        // 삭제(DEL_YN = 'Y')
-        $btnDelete.on("click",function(){
-            var object = {
-                "seq" : $seq.val()
-            };
-            Delete(object);
-        });
-        // 취소
-        $btnCancel.on("click",function(){
-            window.history.back();
         });
 
-
-        function fieldData(){
-
-            var data = {
-                "fieldMainNm" : $fieldMainNm.val(),
-                "fieldAddress" : $fieldAddress.val(),
-                "fieldTel" : $fieldTel.val(),
-                "fieldRefund" : $fieldRefund.val()
-            };
-            if($seq.val() != ''){
-                data["seq"] = $seq.val();
+        $passwordReset.on("click",function(){
+            var btnType = "passwordReset";
+            if(confirmMsg(btnType) === true) {
+                update(btnType);
             }
-            if(isUpdate == 'false'){
-                data["regId"] = "<%=username%>";
-            } else if(isUpdate == 'true'){
-                data["modId"] = "<%=username%>";
+        });
+
+        $lockYn.on("click",function(){
+            var btnType = "lockYn";
+            if(confirmMsg(btnType) === true) {
+                update(btnType);
             }
+        });
 
-            return data;
-        }
+        function update(btnType) {
 
-        function Save(object) {
             $.ajax({
-                url : "/fieldMain/save",
-                type : "POST",
-                contentType : "application/json", // 명시하지 않으면 application/x-www-form-urlencoded; charset=UTF-8로 지정
-                processData : false, // 파일전송 시 사용. query string 설정
-                data : JSON.stringify(object),
-                success : function () {
-                    if(${isUpdate eq false}){
-                        alert("등록이 완료되었습니다.");
-                    } else {
-                        alert("수정이 완료되었습니다.");
+                url: "/account/admin/update",
+                type: "POST",
+                data: {"id": "admin", "btnType": btnType},
+                success: function (data) {
+                    if(btnType === "failCntReset"){
+                        alert("비밀번호 실패횟수가 초기화되었습니다.");
+                    } else if (btnType === "passwordReset"){
+                        alert("비밀번호가 초기화되었습니다.");
+                    } else if (btnType === "lockYn"){
+                        if($isLock === 'Y'){
+                            alert("계정잠금이 해제되었습니다.");
+                        } else {
+                            alert("계정을 잠구었습니다.");
+                        }
+                        location.reload();
                     }
-                    location.href = document.referrer; //뒤로가기 후 새로고침
-                }, error: function (jqxhr){
-                    alert("정상적인 작동이 아닙니다. 이전 페이지로 돌아갑니다.");
-                    location.href = document.referrer;
+                }, error: function (jqxhr) {
+                    alert("작업에 실패했습니다.");
                 }
-            });
+            })
         }
 
-        function Delete(object) {
-            $.ajax({
-                url : "/fieldMain/delete",
-                type : "POST",
-                contentType: "application/json",
-                data : JSON.stringify(object),
-                success : function(){
-                    alert("삭제가 완료되었습니다.");
-                    location.href = document.referrer;
-                }, error(jqxhr){
-                    alert("정상적인 작동이 아닙니다. 이전 페이지로 돌아갑니다.");
-                    location.href = document.referrer;
+        function confirmMsg(btnType) {
+            var msg;
+            console.log(msg);
+            if(btnType === "failCntReset"){
+                msg = confirm("비밀번호 실패횟수를 초기화하시겠습니까?");
+            } else if (btnType === "passwordReset"){
+                msg = confirm("비밀번호를 초기화하시겠습니까?");
+            } else if(btnType === "lockYn"){
+                if($isLock === 'Y'){
+                    msg = confirm("계정잠금을 해제하시겠습니까?");
+                } else {
+                    msg = confirm("계정을 잠그시겠습니까?");
                 }
-            });
-        }
 
+            }
+            return msg === true ? true : false;
+        }
     });
+
+
+
+
 </script>

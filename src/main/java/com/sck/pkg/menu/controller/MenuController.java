@@ -22,7 +22,6 @@ public class MenuController {
 
     @RequestMapping("/menu")
     public String menu(@ModelAttribute("conn")Menu condition, Model model){
-        System.out.println(condition.getSeq());
         List<Menu> adminResult = menuService.adminTree();
         List<Menu> frontResult = menuService.frontTree();
         model.addAttribute("adminResult",adminResult);

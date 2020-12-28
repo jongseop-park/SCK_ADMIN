@@ -3,6 +3,7 @@ package com.sck.pkg.account.service;
 import com.sck.core.domain.Search;
 import com.sck.domain.Admin;
 import com.sck.pkg.account.mapper.AdminAccMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,19 @@ public class AdminAccService {
     /* 게시글 삭제 여부(DEL_YN) */
     public void deleteUpdate(Admin condition){
         adminAccMapper.deleteUpdate(condition);
+    }
+
+    public void failCntReset(String id) {
+        adminAccMapper.failCntReset(id);
+    }
+
+    /* 비밀번호 실패횟수 초기화 */
+    public void passwordReset(String id){
+        adminAccMapper.passwordReset(id);
+    }
+
+    /* 계정 잠금 해제 */
+    public void accountIsLock(String id){
+        adminAccMapper.accountIsLock(id);
     }
 }

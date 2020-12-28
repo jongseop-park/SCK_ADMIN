@@ -303,9 +303,9 @@
         // 이미지 삭제 컨펌
         function confirmImg(){
             var confirmImg = confirm("이미지를 삭제하시겠습니까?");
-            if (confirmImg == true){
+            if (confirmImg === true){
                 return true;
-            } else if(confirmImg == false){
+            } else if(confirmImg === false){
                 return false;
             }
         }

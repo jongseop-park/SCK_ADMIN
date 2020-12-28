@@ -17,7 +17,7 @@ public class AdminController {
     private AdminService adminService;
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login")
     public String login() {
         return "admin/login";
     }

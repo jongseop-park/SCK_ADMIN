@@ -12,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/account")
@@ -56,6 +58,31 @@ public class AccountController {
             model.addAttribute("result",memberAccService.findByDetail(member));
         }
         
+        return path;
+    }
+
+    @RequestMapping("/{type}/update")
+    public String failCntReset(@PathVariable String type, @RequestParam Map<String, String> params, Model model){
+        String path = "account/" + type + "/form";
+        String id = params.get("id");
+        String btnType = params.get("btnType");
+
+        if (type.equals("admin")){ // 타입 Admin
+            switch (btnType) {
+                case "failCntReset":  // 비밀번호 실패횟수 초기화
+                    adminAccService.failCntReset(id);
+                    break;
+                case "passwordReset":
+                    adminAccService.passwordReset(id);
+                    break;
+                case "lockYn":
+                    adminAccService.accountIsLock(id);
+                    break;
+            }
+        } else if (type.equals("member")) {
+
+        }
+
         return path;
     }
 

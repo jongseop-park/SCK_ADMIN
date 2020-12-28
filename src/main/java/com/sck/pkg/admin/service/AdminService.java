@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
-@Service("pkg.admin.service")
+@Service
 public class AdminService implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(AdminService.class);
@@ -41,6 +41,9 @@ public class AdminService implements UserDetailsService {
         return new AdminPrincipal(adminAuthes);
     }
 
+    /* Transactional
+    * begin, commit 자동수행
+    * 예외시 rollback 자동수행 */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void InsertUser(Admin admin) throws Exception{
         admin.setAdminPw(bCryptPasswordEncoder.encode(admin.getAdminPw())); // 비밀번호 암호화
@@ -52,4 +55,13 @@ public class AdminService implements UserDetailsService {
         }
     }
 
+    /* 비밀번호 실패횟수 카운트 */
+    public void failCnt(String id){
+        adminMapper.failCnt(id);
+    }
+
+    /* 비밀번호 실패횟수 초기화 */
+    public void failCntReset(String id){
+        adminMapper.failCntReset(id);
+    }
 }

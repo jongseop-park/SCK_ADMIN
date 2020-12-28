@@ -28,6 +28,7 @@
         </collection>
     </resultMap>
 
+    <!-- 로그인 시 회원정보 -->
     <select id="findByAdminId" resultMap="AdminMap" parameterType="Admin">
         SELECT
         A.ADMIN_ID,
@@ -43,13 +44,15 @@
         AND C.DEL_YN = 'N'
 
     </select>
+
+    <!-- 회원가입 -->
     <insert id="adminInsert" parameterType="Admin">
         INSERT INTO WEB_ADMIN(SEQ, ADMIN_ID, ADMIN_PW, ADMIN_NM, ADMIN_EMAIL, ADMIN_TEL, PW_FAIL_CNT, LOCK_YN, REG_DATE, DEL_YN)
         VALUES (WEB_ADMIN_SEQ.NEXTVAL, #{adminId}, #{adminPw}, #{adminNm}, #{adminEmail}, #{adminTel}, 0, 'N', SYSDATE, 'N')
     </insert>
 
 
-    
+    <!-- 권한 -->
     <insert id="authInsert" parameterType="Admin">
         INSERT INTO WEB_AUTH(ADMIN_SEQ, AUTH_SEQ)
         VALUES (
@@ -57,4 +60,24 @@
             (SELECT SEQ FROM WEB_AUTH_GRP WHERE AUTH_CODE = 'ROLE_ADMIN')
         )
     </insert>
+
+    <!-- 로그인 실패횟수 누적 -->
+    <update id="failCnt"  parameterType="String">
+        UPDATE WEB_ADMIN
+        SET
+        PW_FAIL_CNT = PW_FAIL_CNT+1,
+        LOCK_YN =
+        CASE
+            WHEN PW_FAIL_CNT+1 = 5 THEN 'Y'
+            ELSE 'N'
+        END
+        WHERE ADMIN_ID = #{id}
+    </update>
+    
+    <!-- 로그인 실패횟수 초기화 -->
+    <update id="failCntReset" parameterType="String">
+        UPDATE WEB_ADMIN
+        SET PW_FAIL_CNT = 0
+        WHERE ADMIN_ID = #{id}
+    </update>
 </mapper>

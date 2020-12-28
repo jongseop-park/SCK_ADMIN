@@ -3,6 +3,7 @@ package com.sck.pkg.account.mapper;
 import com.sck.core.domain.Search;
 import com.sck.domain.Admin;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +32,13 @@ public interface AdminAccMapper {
 
     /* 게시글 삭제 여부(DEL_YN) */
     public void deleteUpdate(Admin condition);
+
+    /* 비밀번호 실패횟수 초기화 */
+    public void failCntReset(@Param("id") String id);
+
+    /* 비밀번호 초기화 */
+    public void passwordReset(@Param("id") String id);
+
+    /* 계정 잠금 해제 */
+    public void accountIsLock(@Param("id") String id);
 }

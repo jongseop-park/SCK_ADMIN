@@ -35,12 +35,13 @@
                             <large>SCK Admin</large>
                         </div>
                         <form role="form" method="post">
+<%--                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
                             <div class="form-group mb-3">
                                 <div class="input-group input-group-merge input-group-alternative">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                     </div>
-                                    <input class="form-control" placeholder="아이디" type="text" name="adminId" value="admin">
+                                    <input class="form-control" placeholder="아이디" type="text" name="adminId" value="admin"> <%-- admin--%>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -48,15 +49,16 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                     </div>
-                                    <input class="form-control" placeholder="패스워드" type="password" name="adminPw" value="admin">
+                                    <input class="form-control" placeholder="패스워드" type="password" name="adminPw" value="admin"/> <%--admin--%>
                                 </div>
                             </div>
                             <div class="form-group" style="text-align: center; margin-top: 50px; height: 50px;">
 
-                                    <c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+                                    <%--<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
                                         <p class="error" >아이디, 혹은 비밀번호가 올바르지 않습니다.</p>
                                         <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
-                                    </c:if>
+                                    </c:if>--%>
+                                <p style="white-space: pre-line;">${errorMessage}</p>
                             </div>
                             <div class="custom-control custom-control-alternative custom-checkbox">
                                 <input class="custom-control-input" id=" customCheckLogin" type="checkbox">

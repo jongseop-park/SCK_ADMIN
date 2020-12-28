@@ -85,13 +85,14 @@
                                 <th scope="col" class="sort" >성명</th>
                                 <th scope="col" class="sort" >이메일</th>
                                 <th scope="col" class="sort" >연락처</th>
+                                <th scope="col" class="sort" >권한</th>
                                 <th scope="col" class="sort" >가입일</th>
                             </tr>
                             </thead>
                             <tbody class="list">
                             <c:if test="${empty result}">
                                 <tr style="text-align: center;">
-                                    <th scope="row" colspan="6">
+                                    <th scope="row" colspan="7">
                                         <span class="name mb-0 text-sm">0 개의 게시물이 있습니다.</span>
                                     </th>
                                 </tr>
@@ -113,6 +114,9 @@
                                     </th>
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.adminTel}</span>
+                                    </th>
+                                    <th scope="row">
+                                        <span class="name mb-0 text-sm">${list.authGrp.authName}</span>
                                     </th>
                                     <th scope="row">
                                         <span class="name mb-0 text-sm">${list.regDate}</span>
