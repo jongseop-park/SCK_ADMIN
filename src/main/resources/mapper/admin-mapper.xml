@@ -61,6 +61,15 @@
         )
     </insert>
 
+    <!-- 로그인 시 정보업데이트 -->
+    <update id="loginSuccess" parameterType="String">
+         UPDATE WEB_ADMIN
+        SET
+            PW_FAIL_CNT = 0,
+            LAST_LOGIN_DT = SYSDATE
+        WHERE ADMIN_ID = #{id}
+    </update>
+
     <!-- 로그인 실패횟수 누적 -->
     <update id="failCnt"  parameterType="String">
         UPDATE WEB_ADMIN
@@ -77,7 +86,42 @@
     <!-- 로그인 실패횟수 초기화 -->
     <update id="failCntReset" parameterType="String">
         UPDATE WEB_ADMIN
-        SET PW_FAIL_CNT = 0
+        SET
+            PW_FAIL_CNT = 0
         WHERE ADMIN_ID = #{id}
     </update>
+
+    <!-- 회원정보상세 -->
+    <select id="myProfile" resultType="Admin" parameterType="Admin">
+        SELECT
+            SEQ,
+            ADMIN_ID,
+            ADMIN_NM,
+            ADMIN_EMAIL,
+            ADMIN_TEL,
+            REG_DATE,
+            DEL_YN
+        FROM WEB_ADMIN
+        WHERE ADMIN_ID = #{adminId}
+    </select>
+
+    <!-- 회원정보수정 -->
+    <update id="save" parameterType="Admin">
+        UPDATE WEB_ADMIN
+        SET
+            ADMIN_NM = #{adminNm},
+            ADMIN_EMAIL = #{adminEmail},
+            ADMIN_TEL = #{adminTel},
+            ADMIN_PW = #{adminPw},
+            MOD_DATE = SYSDATE
+        WHERE ADMIN_ID = #{adminId}
+    </update>
+
+    <!-- 회원정보확인 비밀번호 체크 -->
+    <select id="passwordCheck" resultType="String" parameterType="Admin">
+        SELECT ADMIN_PW
+        FROM WEB_ADMIN
+        WHERE ADMIN_ID = #{adminId}
+    </select>
+
 </mapper>

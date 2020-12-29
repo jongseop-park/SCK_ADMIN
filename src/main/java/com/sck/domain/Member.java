@@ -16,6 +16,10 @@ public class Member { // 회원 vo
     private String memberTel;
     /** 가입일자 */
     private String regDate;
+    /** 수정일자 */
+    private String modDate;
+    /** 마지막 로그인 일자 */
+    private String lastLoginDt;
     /** 탈퇴여부 */
     private String delYn;
 
@@ -73,6 +77,22 @@ public class Member { // 회원 vo
 
     public void setRegDate(String regDate) {
         this.regDate = regDate;
+    }
+
+    public String getModDate() {
+        return modDate;
+    }
+
+    public void setModDate(String modDate) {
+        this.modDate = modDate;
+    }
+
+    public String getLastLoginDt() {
+        return lastLoginDt;
+    }
+
+    public void setLastLoginDt(String lastLoginDt) {
+        this.lastLoginDt = lastLoginDt;
     }
 
     public String getDelYn() {

@@ -17,10 +17,16 @@ public interface AdminMapper {
     public int adminInsert(Admin admin);
     /* 권한 */
     public void authInsert(Admin admin);
-
+    /* 회원정보 상세*/
+    public Admin myProfile(Admin condition);
+    /* 회원정보수정 */
+    public void save(Admin condition);
+    /* 회원정보확인 비밀번호 체크 */
+    public String passwordCheck(Admin condition);
+    /* 로그인 시 정보업데이트 */
+    public void loginSuccess(@Param("id") String id);
     /* 비밀번호 실패횟수 카운트 */
     public void failCnt(@Param("id") String id);
-
     /* 비밀번호 실패횟수 초기화 */
     public void failCntReset(@Param("id") String id);
 

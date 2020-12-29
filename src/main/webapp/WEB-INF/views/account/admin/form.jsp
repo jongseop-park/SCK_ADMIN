@@ -211,7 +211,7 @@
         function update(btnType) {
 
             $.ajax({
-                url: "/account/admin/update",
+                url: "/account/admin/save",
                 type: "POST",
                 data: {"id": "admin", "btnType": btnType},
                 success: function (data) {

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -37,8 +38,10 @@ public interface AdminAccMapper {
     public void failCntReset(@Param("id") String id);
 
     /* 비밀번호 초기화 */
-    public void passwordReset(@Param("id") String id);
+    public void passwordReset(Map<String, Object> map);
 
     /* 계정 잠금 해제 */
     public void accountIsLock(@Param("id") String id);
+
+
 }

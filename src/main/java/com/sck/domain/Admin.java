@@ -20,8 +20,12 @@ public class Admin {
     private String pwFailCnt;
     /** 계정 잠금여부 */
     private String lockYn;
-    /** 생성일자 */
+    /** 가입일자 */
     private String regDate;
+    /** 수정일자 */
+    private String modDate;
+    /** 마지막 로그인 일자 */
+    private String lastLoginDt;
     /** 삭제여부 */
     private String delYn;
 
@@ -101,6 +105,22 @@ public class Admin {
 
     public void setRegDate(String regDate) {
         this.regDate = regDate;
+    }
+
+    public String getModDate() {
+        return modDate;
+    }
+
+    public void setModDate(String modDate) {
+        this.modDate = modDate;
+    }
+
+    public String getLastLoginDt() {
+        return lastLoginDt;
+    }
+
+    public void setLastLoginDt(String lastLoginDt) {
+        this.lastLoginDt = lastLoginDt;
     }
 
     public String getDelYn() {

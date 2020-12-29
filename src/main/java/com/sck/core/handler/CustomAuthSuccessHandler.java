@@ -34,7 +34,7 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler {
         clearAuthenticationAttributes(request);
         redirectStrategy(request, response, authentication);
         String adminId = request.getParameter("adminId");
-        adminService.failCntReset(adminId);
+        adminService.loginSuccess(adminId);
 
     }
 

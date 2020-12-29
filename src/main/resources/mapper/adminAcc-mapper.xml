@@ -99,6 +99,12 @@
         WHERE ADMIN_ID = #{id}
     </update>
 
+    <update id="passwordReset" parameterType="hashMap">
+        UPDATE WEB_ADMIN
+        SET ADMIN_PW = #{pw}
+        WHERE ADMIN_ID = #{id}
+    </update>
+
     <update id="accountIsLock" parameterType="String">
         UPDATE WEB_ADMIN
         SET LOCK_YN = CASE LOCK_YN WHEN 'Y' THEN 'N' ELSE 'Y' END

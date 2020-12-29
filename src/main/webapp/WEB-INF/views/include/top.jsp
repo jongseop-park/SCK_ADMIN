@@ -30,9 +30,9 @@
                         <div class="dropdown-header noti-title">
                             <h6 class="text-overflow m-0">환영합니다!</h6>
                         </div>
-                        <a href="#!" class="dropdown-item">
+                        <a href="/pwCheck" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
-                            <span>내 정보</span>
+                            <span>프로필</span>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="/logout" class="dropdown-item">
@@ -48,7 +48,7 @@
 <script src="/static/vendor/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        if(window.console!=undefined){
+        if(window.console !== undefined){
             setTimeout(console.log.bind(console,"%cSCK","font:4em verdana;color:#009e3f;font-weight:bold"),0);
             setTimeout(console.log.bind(console,"%c 사이트 내용 무단 조작 또는 복제시 법적 처벌을 받으실 수 있습니다","font:1.4em sans-serif;color:#777;"),0);
         }
