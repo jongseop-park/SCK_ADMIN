@@ -24,7 +24,7 @@
 
 <body>
 <!-- Side -->
-<%@ include file="/WEB-INF/views/include/side.jsp"%>
+<c:import url="/side"/>
 <!-- /Side -->
   <!-- Main content -->
   <div class="main-content" id="panel">
@@ -175,7 +175,7 @@
           <c:forEach var="admin" items="${adminResult}" varStatus="status">
           {
             'id':'${admin.seq}',
-            'parent':'${admin.parentSeq == null ? '#' : admin.parentSeq}',
+            'parent':'${admin.parentSeq eq null ? '#' : admin.parentSeq}',
             'text':'${admin.menuName}',
             'state':
                     {
@@ -196,7 +196,7 @@
           <c:forEach var="front" items="${frontResult}" varStatus="status">
           {
             'id':'${front.seq}',
-            'parent':'${front.parentSeq == null ? '#' : front.parentSeq}',
+            'parent':'${front.parentSeq eq null ? '#' : front.parentSeq}',
             'text':'${front.menuName}',
             'state':
                     {
@@ -252,6 +252,7 @@
     var parentSeq;
     var depth;
     var useYn;
+    var orderNo;
 
     $menuSave.on("click",function () {
       var obj = {
@@ -259,11 +260,12 @@
         menuType : menuType,
         menuName : $menuName.val(),
         menuUrl : $menuUrl.val(),
-        parentSeq : parentSeq,
+        parentSeq : parentSeq === '#' ? null : parentSeq,
         depth : depth,
+        // orderNo : ? ,
         useYn : $("[name=useYn]:checked").val()
       };
-      // console.log(obj)
+
       $.ajax({
         url : '/menu/save',
         type : 'POST',
@@ -279,7 +281,6 @@
     });
 
     $menuAdd.on("click",function () {
-
       var addNode = $(".jstree-clicked").parent().attr("id");
       if(addNode == undefined){
         alert("메뉴를 선택해주세요.")
@@ -301,6 +302,7 @@
         alert("최상위 루트는 삭제하실 수 없습니다.");
       } else {
         if(confirmYn() == true) {
+          $jstree.jstree().delete_node($("#"+deleteNode)); // 노드 삭제
           $.ajax({
             url : '/menu/delete',
             type : 'POST',
@@ -310,7 +312,6 @@
               alert("삭제되었습니다.");
               location.reload();
             }, error : function(jqxhr){
-              alert("처리실패");
               console.log(jqxhr);
             }
           })
@@ -327,7 +328,7 @@
     });
 
     $jstree.on("select_node.jstree",function (e,data) { // jstree 선택 이벤트
-      console.log(data.instance.get_node(data.node));
+      // console.log(data.instance.get_node(data.node));
 
       seq = data.instance.get_node(data.selected).id;
       parentSeq = data.instance.get_node(data.node).parent;
@@ -336,8 +337,9 @@
       useYn = data.instance.get_node(data.node).original.result.useYn;
 
       $menuTitle.text($jstree.jstree(true).get_node(seq).text);
-      $menuName.attr("placeholder",$menuTitle.text());
-      $menuName.val('');
+      $menuName.attr("placeholder","메뉴명");
+      $menuName.val($menuTitle.text());
+      $menuUrl.attr("placeholder","메뉴URL이 공백일 경우 Heading Menu로 취급됩니다.");
       $menuUrl.val('');
       $useYn.eq(0).prop("checked",true);
 

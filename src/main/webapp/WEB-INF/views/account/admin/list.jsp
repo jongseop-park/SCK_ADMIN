@@ -22,7 +22,7 @@
 
 <body>
 <!-- Side -->
-<%@ include file="/WEB-INF/views/include/side.jsp"%>
+<c:import url="/side"/>
 <!-- /Side -->
 <div class="main-content" id="panel">
     <!-- Top -->
@@ -62,7 +62,7 @@
                             <select class="custom-select mr-sm-3" style="color: black;" id="searchSelect" name="searchType">
                                 <option value="n" <c:out value="${conn.searchType == null ? 'selected' : ''}"/>>전체보기</option>
                                 <option value="i" <c:out value="${conn.searchType == 'i' ? 'selected' : ''}"/>>아이디</option>
-                                <option value="n" <c:out value="${conn.searchType == 'n' ? 'selected' : ''}"/>>성명</option>
+                                <option value="nm" <c:out value="${conn.searchType == 'nm' ? 'selected' : ''}"/>>성명</option>
                                 <option value="e" <c:out value="${conn.searchType == 'e' ? 'selected' : ''}"/>>이메일</option>
                             </select>
                             <div class="form-group mb-0">
@@ -187,7 +187,6 @@
 <!-- Argon JS -->
 <script src="/static/js/argon.js?v=1.2.0"></script>
 
-<%--
 <script type="text/javascript">
     $(document).ready(function(){
         $CurrentPage = $('#CurrentPage').val();
@@ -208,12 +207,12 @@
             $("#search").val('');
             if($(this).val() == 'n') {
                 $("#search").attr("placeholder", "전체보기");
-            } else if($(this).val() == 'tw'){
-                $("#search").attr("placeholder", "제목/작성자 검색");
-            } else if($(this).val() == 't'){
-                $("#search").attr("placeholder", "제목 검색");
+            } else if($(this).val() == 'i'){
+                $("#search").attr("placeholder", "아이디 검색");
+            } else if($(this).val() == 'nm'){
+                $("#search").attr("placeholder", "성명 검색");
             } else {
-                $("#search").attr("placeholder", "관리자 검색");
+                $("#search").attr("placeholder", "이메일 검색");
             }
         });
 
@@ -224,7 +223,7 @@
         })
 
         function location() {
-            var loc = "field/list"
+            var loc = "account/admin/list"
                 + '${pageMaker.makeQuery(1)}'
                 + "&searchType="
                 + $("select option:selected").val()
@@ -234,4 +233,4 @@
             return loc;
         }
     });
-</script>--%>
+</script>

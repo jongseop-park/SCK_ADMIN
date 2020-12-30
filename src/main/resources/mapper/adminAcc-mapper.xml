@@ -36,7 +36,7 @@
     <sql id="search">
         <if test="searchType != null">
             <if test="searchType == 'i'.toString()">AND ADMIN_ID LIKE '%' || {keyword} || '%'</if>
-            <if test="searchType == 'n'.toString()">AND ADMIN_NM LIKE '%' || #{keyword} || '%'</if>
+            <if test="searchType == 'nm'.toString()">AND ADMIN_NM LIKE '%' || #{keyword} || '%'</if>
             <if test="searchType == 'e'.toString()">AND ADMIN_EMAIL LIKE '%' || #{keyword} || '%'</if>
         </if>
     </sql>

@@ -24,7 +24,8 @@
 
 <body class="bg-default">
 <!-- Side -->
-<%@ include file="/WEB-INF/views/include/side.jsp" %>
+<%--<c:import url="/side"/>--%>
+<c:import url="/side"/>
 <!-- /Side -->
 <div class="main-content">
     <!-- Top -->

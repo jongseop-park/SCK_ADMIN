@@ -48,4 +48,11 @@ public class MenuController {
         menuService.delete(condition);
         return condition;
     }
+
+    @RequestMapping("/side")
+    public String side(Menu menu, Model model){
+        List<Menu> result = menuService.adminTree();
+        model.addAttribute("result",result);
+        return "include/side";
+    }
 }
