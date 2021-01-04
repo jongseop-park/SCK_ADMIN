@@ -9,11 +9,14 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
 ---
-# 실시간 반영 ( 정적 변동 시 )
+# 정적 리소스(자동 반영)
 spring:
   devtools:
     livereload:
       enabled: true
+    restart:
+      enabled: false
+
 ---
 # static 정적 리소스 접근
 spring:
