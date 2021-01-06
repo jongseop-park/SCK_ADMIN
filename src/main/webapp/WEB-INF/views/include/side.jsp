@@ -5,7 +5,7 @@
         <!-- Brand -->
         <div class="sidenav-header  align-items-center">
             <a class="navbar-brand" href="/main">
-                <img src="/static/img/brand/blue.png" class="navbar-brand-img" alt="...">
+                <img src="/static/img/brand/logo.png" class="navbar-brand-img" alt="LOGO">
             </a>
         </div>
         <div class="navbar-inner">

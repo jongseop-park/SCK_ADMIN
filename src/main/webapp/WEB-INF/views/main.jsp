@@ -119,7 +119,7 @@
             '</div>' +
             '<div class="body">' +
             '<div class="img">' +
-            '<img src="/static/img/brand/blue.png" width="73" height="70">' +
+            '<img src="/static/img/brand/logo.png" width="100%" height="100%">' +
             '</div>' +
             '<div class="desc">' +
             '<div class="ellipsis">서울특별시 동작구 장승배기로5길 13</div>' +
